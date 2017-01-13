@@ -1,0 +1,16 @@
+span.owner_type input {
+	margin-left:15px;
+	margin-right:5px;
+}
+
+select#owner_existing {
+	display:none;
+}
+
+@media (min-width:767px) {
+	form.search {
+		float:right;
+		margin-top:-45px;
+		margin-right:75px;
+	}
+}

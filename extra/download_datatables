@@ -1,0 +1,26 @@
+#!/bin/bash
+
+cd `dirname $0`/../public
+
+if [ "$1" = "" ]; then
+	echo "Usage: $0 <version>"
+	exit
+fi
+
+version=$1
+
+echo "Downloading Datatables version ${version}."
+wget -qO datatables.zip http://datatables.net/releases/DataTables-${version}.zip
+
+if [ ! -s datatables.zip ]; then
+	rm -f datatables.zip
+	echo "Download error."
+	exit
+fi
+
+echo "Installing new Datatables."
+unzip -p datatables.zip DataTables-${version}/media/css/jquery.dataTables.min.css | sed 's/\.\.\/images/\/images\/datatables/g' > css/banshee/datatables.css
+unzip -p datatables.zip DataTables-${version}/media/js/jquery.dataTables.min.js > js/banshee/jquery.datatables.js
+
+echo "Cleaning up."
+rm -f datatables.zip

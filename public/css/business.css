@@ -1,0 +1,29 @@
+table.usedby td:nth-child(3) {
+	cursor:pointer;
+    width:25px;
+}
+
+div.dialogs {
+	display:none;
+}
+
+span.glyphicon {
+	padding:5px;
+	margin:-5px;
+}
+
+div.ui-dialog {
+	box-shadow:5px 8px 15px;
+	background-color:#f0f0f0;
+}
+
+div.ui-dialog-titlebar {
+	color:#ffffff;
+	background-image:linear-gradient(to bottom, #337ab7 0px, #265a88 100%);
+	background-color:#4040d0;
+}
+
+div.ui-dialog-content span {
+	white-space:pre-wrap;
+}
+

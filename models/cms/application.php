@@ -1,0 +1,206 @@
+<?php
+	class cms_application_model extends Banshee\model {
+		private $columns = array("name", "owner_id", "description", "external", "privacy_law");
+
+		public function count_applications() {
+			$query = "select count(*) as count from applications where organisation_id=%d";
+
+			if (($result = $this->db->execute($query, $this->user->organisation_id)) == false) {
+				return false;
+			}
+
+			return $result[0]["count"];
+		}
+
+		public function get_applications($offset, $limit) {
+			unset($_SESSION["application_order"]);
+			if (isset($_SESSION["application_order"]) == false) {
+				$_SESSION["application_order"] = array("name", "description");
+			}
+
+			if ((in_array($_GET["order"], $this->columns)) && ($_GET["order"] != $_SESSION["application_order"][0])) {
+				$_SESSION["application_order"] = array($_GET["order"], $_SESSION["application_order"][0]);
+			}
+
+			$query = "select a.*, b.name as owner from applications a left join business b on a.owner_id=b.id where a.organisation_id=%d";
+
+			$search = array();
+			if ($_SESSION["application_search"] != null) {
+				foreach ($this->columns as $i => $column) {
+					$this->columns[$i] = $column." like %s";
+					array_push($search, "%".$_SESSION["application_search"]."%");
+				}
+				$query .= " having (".implode(" or ", $this->columns).")";
+			}
+
+			$query .= " order by a.%S,a.%S limit %d,%d";
+
+			return $this->db->execute($query, $this->user->organisation_id, $search, $_SESSION["application_order"], $offset, $limit);
+		}
+
+		public function get_application($application_id) {
+			$query = "select * from applications where id=%d and organisation_id=%d";
+
+			if (($result = $this->db->execute($query, $application_id, $this->user->organisation_id)) == false) {
+				return false;
+			}
+
+			return $result[0];
+		}
+
+		public function get_business() {
+			$query = "select * from business where organisation_id=%d order by name";
+
+			return $this->db->execute($query, $this->user->organisation_id);
+		}
+
+		public function get_owner_id($application) {
+			if ($application["owner_type"] == "new") {
+				if ($application["owner_name"] == "") {
+					return null;
+				}
+
+				if (($business = $this->db->entry("business", $application["owner_name"], "name")) === false) {
+					return false;
+				} else if ($business != false) {
+					return (int)$business["id"];
+				}
+
+				$owner = array(
+					"organisation_id" => $this->user->organisation_id,
+					"name"            => $application["owner_name"],
+					"description"     => "");
+				if ($this->db->insert("business", $owner) === false) {
+					return false;
+				}
+
+				return $this->db->last_insert_id;
+			}
+
+			if ($application["owner_type"] == "existing") {
+				if ($application["owner_id"] == 0) {
+					return null;
+				}
+
+				return (int)$application["owner_id"];
+			}
+
+			return null;
+		}
+
+		public function save_oke($application) {
+			$result = true;
+
+			if (isset($application["id"])) {
+				if ($this->get_application($application["id"]) == false) {
+					$this->view->add_message("Application not found.");
+					return false;
+				}
+			}
+
+			$application["name"] = trim($application["name"]);
+
+			if ($application["name"] == "") {
+				$this->view->add_message("Enter the application name.");
+				$result = false;
+			} else {
+				$query = "select count(*) as count from applications where name=%s and organisation_id=%d";
+				$args = array($application["name"], $this->user->organisation_id);
+				if (isset($application["id"])) {
+					$query .= " and id!=%d";
+					array_push($args, $application["id"]);
+				}
+
+				if (($result = $this->db->execute($query, $args)) === false) {
+					$this->view->add_message("Database error.");
+					return false;
+				}
+				if ($result[0]["count"] > 0) {
+					$this->view->add_message("This name already exists.");
+					$result = false;
+				}
+			}
+
+			if ($application["owner_type"] == "existing") {
+				$query = "select * from business where id=%d and organisation_id=%d";
+				if ($this->db->execute($query, $application["owner_id"], $this->user->organisation_id) == false) {
+					$this->view->add_message("Owner does not exist.");
+					$result = false;
+				}
+			}
+
+			return $result;
+		}
+
+		public function create_application($application) {
+			$keys = array("id", "organisation_id", "name", "description", "owner_id", "confidentiality", "integrity", "availability", "external", "privacy_law");
+
+			$application["id"] = null;
+			$application["name"] = trim($application["name"]);
+			$application["organisation_id"] = $this->user->organisation_id;
+			$application["external"] = is_true($application["external"]) ? YES : NO;
+			$application["privacy_law"] = is_true($application["privacy_law"]) ? YES : NO;
+
+			if ($this->db->query("begin") === false) {
+				return false;
+			}
+
+			if (($application["owner_id"] = $this->get_owner_id($application)) === false) {
+				$this->db->query("rollback");
+				return false;
+			}
+
+			if ($this->db->insert("applications", $application, $keys) === false) {
+				$this->db->query("rollback");
+				return false;
+			}
+
+			return $this->db->query("commit") !== false;
+		}
+
+		public function update_application($application) {
+			$keys = array("name", "description", "owner_id", "confidentiality", "integrity", "availability", "external", "privacy_law");
+
+			$application["name"] = trim($application["name"]);
+			$application["external"] = is_true($application["external"]) ? YES : NO;
+			$application["privacy_law"] = is_true($application["privacy_law"]) ? YES : NO;
+
+			if ($this->db->query("begin") === false) {
+				return false;
+			}
+
+			if (($application["owner_id"] = $this->get_owner_id($application)) === false) {
+				$this->db->query("rollback");
+				return false;
+			}
+
+			if ($this->db->update("applications", $application["id"], $application, $keys) === false) {
+				$this->db->query("rollback");
+				return false;
+			}
+
+			return $this->db->query("commit") !== false;
+		}
+
+		public function delete_oke($application) {
+			$result = true;
+
+			if ($this->get_application($application["id"]) == false) {
+				$this->view->add_message("Application not found.");
+				$result = false;
+			}
+
+			return $result;
+		}
+
+		public function delete_application($application_id) {
+			$queries = array(
+				array("delete from used_by where application_id=%d", $application_id),
+				array("delete from connections where from_application_id=%d or to_application_id=%d", $application_id, $application_id),
+				array("delete from runs_at where application_id=%d", $application_id),
+				array("delete from applications where id=%d", $application_id));
+
+			return $this->db->transaction($queries) !== false;
+		}
+	}
+?>

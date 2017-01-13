@@ -1,0 +1,27 @@
+#!/bin/bash
+
+cd `dirname $0`/../public
+
+if [ "$1" = "" ]; then
+	echo "Usage: $0 <version>"
+	exit
+fi
+
+version=$1
+
+echo "Downloading Bootstrap version ${version}."
+wget -qO bootstrap.zip https://github.com/twbs/bootstrap/releases/download/v${version}/bootstrap-${version}-dist.zip
+
+if [ ! -s bootstrap.zip ]; then
+	rm -f bootstrap.zip
+	echo "Download error."
+	exit
+fi
+
+echo "Installing Bootstrap."
+unzip -p bootstrap.zip bootstrap-${version}-dist/css/bootstrap.min.css | sed 's/url(\.\./url(/g' > css/banshee/bootstrap.css
+unzip -p bootstrap.zip bootstrap-${version}-dist/css/bootstrap-theme.min.css > css/banshee/bootstrap-theme.css
+unzip -p bootstrap.zip bootstrap-${version}-dist/js/bootstrap.min.js > js/banshee/bootstrap.js
+
+echo "Cleaning up."
+rm -f bootstrap.zip

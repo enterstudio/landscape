@@ -1,0 +1,140 @@
+#!/usr/bin/php
+<?php
+	/* This script will remove all the demo content in your Banshee installation.
+	 */
+
+	error_reporting(E_ALL & ~E_NOTICE);
+	chdir(__DIR__."/..");
+	require("libraries/core/banshee.php");
+	require("libraries/helpers/console.php");
+
+	function delete_file($file) {
+		if (file_exists($file)) {
+			unlink($file);
+		}
+	}
+
+	function truncate_directory($dir) {
+		if (($dp = opendir($dir)) == false) {
+			return;
+		}
+
+		while (($file = readdir($dp)) != false) {
+			if ($file[0] == ".") {
+				continue;
+			}
+			delete_file($dir."/".$file);
+		}
+
+		closedir($dp);
+	}
+
+	function remove_layout($name) {
+		$filename = "views/banshee/main.xslt";
+
+		if (($file = file($filename)) === false) {
+			return false;
+		}
+
+		if (($fp = fopen($filename, "w")) == false) {
+			return false;
+		}
+
+		$include = false;
+		foreach ($file as $i => $line) {
+			if (strpos($line, "layout_".$name) !== false) {
+				continue;
+			}
+
+			fputs($fp, $line);
+		}
+
+		fclose($fp);
+
+		delete_file("views/banshee/layout_".$name.".xslt");
+		delete_file("public/css/banshee/layout_".$name.".css");
+
+		return true;
+	}
+
+	if (($argv[1] != "for") && ($argv[2] != "sure")) {
+		exit("Use 'for sure' as the parameter for this script.\n");
+	}
+
+	/* Demo page files
+	 */
+	$dirs = array("views/demos", "controllers/demos", "models/demos", "public/css/demos");
+	foreach ($dirs as $dir) {
+		$dir .= "/";
+		if (($dp = @opendir($dir)) != false) {
+			while (($file = readdir($dp)) != false) {
+				if (($file == ".") || ($file == "..")) {
+					continue;
+				}
+				unlink($dir.$file);
+			}
+			rmdir($dir);
+		}
+	}
+
+	/* Demo content on disk
+	 */
+	truncate_directory("public/".FILES_PATH);
+	truncate_directory("public/".PHOTO_PATH);
+
+	/* Demo content in database
+	 */
+	$db = new Banshee\Database\MySQLi_connection(DB_HOSTNAME, DB_DATABASE, DB_USERNAME, DB_PASSWORD);
+	if ($db->connected == false) {
+		exit("Internal error: database not available.");
+	}
+
+	$tables = array("agenda", "dictionary", "cache", "collection_album", "collections",
+		"faqs", "faq_sections", "forum_last_view", "forum_messages", "forum_topics",
+		"forums", "guestbook", "languages", "links", "mailbox", "menu", "news",
+		"page_access", "pages", "photo_collections", "photos", "poll_answers", "polls",
+		"shop_order_article", "shop_categories", "shop_orders", "shop_articles",
+		"subscriptions", "weblog_tagged", "weblog_tags", "weblog_comments", "weblogs");
+	$db->query("set foreign_key_checks=%d", 0);
+	foreach ($tables as $table) {
+		if (table_exists($db, $table)) {
+			$db->query("truncate table %S", $table);
+		}
+	}
+	$db->query("set foreign_key_checks=%d", 1);
+
+	if (table_exists($db, "dummy")) {
+		$db->query("drop table %S", "dummy");
+	}
+
+	/* Module configuration
+	 */
+	$files = array("settings/public_modules.conf", "settings/private_modules.conf");
+	foreach ($files as $file) {
+		if (($config = file($file)) == false) {
+			continue;
+		}
+
+		if (($fp = fopen($file, "w")) == false) {
+			continue;
+		}
+
+		foreach ($config as $line) {
+			if (substr($line, 0, 5) == "demos") {
+				continue;
+			}
+			fputs($fp, $line);
+		}
+
+		fclose($fp);
+	}
+
+	/* Layout
+	 */
+	activate_layout("site");
+	remove_layout("demo");
+
+	/* Update pages table
+	 */
+	system("database/private_modules");
+?>

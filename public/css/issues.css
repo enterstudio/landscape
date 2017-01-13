@@ -1,0 +1,8 @@
+table.crowded th {
+	width:50%;
+}
+
+table.crowded thead th:nth-child(2),
+table.crowded tbody td:nth-child(2) {
+	padding-left:20px;
+}

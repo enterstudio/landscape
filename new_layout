@@ -1,0 +1,82 @@
+#!/usr/bin/php
+<?php
+	/* new_layout
+	 *
+	 * Copyright (C) by Hugo Leisink <hugo@leisink.net>
+	 * This file is part of the Banshee PHP framework
+	 * http://www.banshee-php.org/
+	 */
+
+	chdir(__DIR__);
+	require("libraries/core/banshee.php");
+	require("libraries/core/security.php");
+	require("libraries/helpers/console.php");
+
+	/* Show help and exit
+	 */
+	function help_exit() {
+		printf("Usage: %s <layout name>\n", $GLOBALS["argv"][0]);
+		exit;
+	}
+
+	/* Set layout name inside file
+	 */
+	function set_layout_name($name) {
+		$filename = "views/banshee/layout_".$name.".xslt";
+
+		if (($file = file($filename)) === false) {
+			return false;
+		}
+
+		foreach ($file as $i => $line) {
+			$file[$i] = str_replace("layout_XXX", "layout_".$name, $line);
+		}
+
+		if (($fp = fopen($filename, "w")) == false) {
+			return false;
+		}
+
+		fputs($fp, implode("", $file));
+		fclose($fp);
+
+		return true;
+	}
+
+	/* Start
+	 */
+	error_reporting(E_ALL & ~E_NOTICE);
+
+	if (count($argv) < 2) {
+		help_exit();
+	}
+
+	if (is_dir("settings") == false) {
+		exit("Not inside a Banshee website directory.\n");
+	}
+
+	$name = $argv[1];
+
+	$layout_characters = VALIDATE_NONCAPITALS.VALIDATE_NUMBERS."/_";
+	if (valid_input($name, $layout_characters) == false) {
+		exit("Invalid module name.\n");
+	}
+
+	print "Creating new layout.\n";
+	if (safe_copy("templates/layout_XXX.xslt", "views/banshee/layout_".$name.".xslt") == false) {
+		return;
+	}
+	if (safe_copy("templates/layout_XXX.css", "public/css/banshee/layout_".$name.".css") == false) {
+		return;
+	}
+
+	print "Setting layout name.\n";
+	set_layout_name($name);
+
+	print "Adding layout to website.\n";
+	add_layout_to_website($name);
+
+	print "Activating new layout.\n";
+	activate_layout($name);
+
+	print "Done.\n";
+?>

@@ -1,0 +1,7 @@
+@media (min-width:768px) {
+	form.types {
+		float:right;
+		margin-right:75px;
+		margin-top:-45px;
+	}
+}

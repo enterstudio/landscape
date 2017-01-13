@@ -1,0 +1,32 @@
+div.filter {
+	margin-bottom:10px;
+}
+
+div.filter input {
+	max-width:none;
+}
+
+div.filter button {
+	padding:6px 15px;
+}
+
+img.icon {
+	float:right;
+	width:40px;
+	margin-top:10px;
+}
+
+@media (min-width:768px) {
+	div.filter {
+		margin-left:350px;
+		margin-top:-48px;
+		position:relative;
+	}
+}
+
+@media (max-width:767px) {
+	img.icon {
+		width:35px;
+		margin-top:-6px;
+	}
+}

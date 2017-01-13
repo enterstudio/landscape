@@ -1,0 +1,15 @@
+#!/usr/bin/php
+<?php
+	chdir(__DIR__);
+	require("../libraries/core/banshee.php");
+
+	$db = new Banshee\Database\MySQLi_connection(DB_HOSTNAME, DB_DATABASE, DB_USERNAME, DB_PASSWORD);
+	if ($db->connected == false) {
+		exit("Internal error: database not available.\n");
+	}
+
+	$tables = array("log_clients", "log_page_views", "log_referers", "log_search_queries", "log_visits");
+	foreach ($tables as $table) {
+		$db->query("delete from %S where date<=%s", $table, date("Y-m-d", strtotime("-".LOG_DAYS." days")));
+	}
+?>
