@@ -156,7 +156,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (1,0,'Overview','/overview'),(2,0,'Issues','/issues'),(3,0,'Export','/export'),(4,0,'Logout','/logout');
+INSERT INTO `menu` VALUES (1,0,'Overview','/overview'),(2,0,'Lists','/list'),(3,0,'Issues','/issues'),(4,0,'Export','/export'),(5,0,'Logout','/logout');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
