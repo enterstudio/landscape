@@ -50,7 +50,7 @@
 				$args = array(trim($label["name"]), $_SESSION["label_category"]);
 
 				if (isset($label["id"])) {
-					$query .= " and id!=%d";
+					$query .= " and l.id!=%d";
 					array_push($args, $label["id"]);
 				}
 
