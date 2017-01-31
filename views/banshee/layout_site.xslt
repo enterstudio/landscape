@@ -13,20 +13,8 @@
 <meta name="description" content="{description}" />
 <meta name="keywords" content="{keywords}" />
 <meta name="generator" content="Banshee PHP framework v{/output/banshee_version} (http://www.banshee-php.org/)" />
-<link rel="apple-touch-icon" sizes="57x57" href="/images/favicons/apple-icon-57x57.png" />
-<link rel="apple-touch-icon" sizes="60x60" href="/images/favicons/apple-icon-60x60.png" />
-<link rel="apple-touch-icon" sizes="72x72" href="/images/favicons/apple-icon-72x72.png" />
-<link rel="apple-touch-icon" sizes="76x76" href="/images/favicons/apple-icon-76x76.png" />
-<link rel="apple-touch-icon" sizes="114x114" href="/images/favicons/apple-icon-114x114.png" />
-<link rel="apple-touch-icon" sizes="120x120" href="/images/favicons/apple-icon-120x120.png" />
-<link rel="apple-touch-icon" sizes="144x144" href="/images/favicons/apple-icon-144x144.png" />
-<link rel="apple-touch-icon" sizes="152x152" href="/images/favicons/apple-icon-152x152.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-icon-180x180.png" />
-<link rel="shortcut icon" type="image/png" sizes="192x192"  href="/images/favicons/android-icon-192x192.png" />
-<link rel="icon" type="image/png" sizes="192x192"  href="/images/favicons/android-icon-192x192.png" />
-<link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png" />
-<link rel="icon" type="image/png" sizes="96x96" href="/images/favicons/favicon-96x96.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png" />
+<link rel="apple-touch-icon" href="/images/favicon.png" type="image/png" />
+<link rel="shortcut icon" href="/images/favicon.png" type="image/png" />
 <title><xsl:if test="title/@page!='' and title/@page!=title"><xsl:value-of select="title/@page" /> - </xsl:if><xsl:value-of select="title" /></title>
 <xsl:for-each select="alternates/alternate">
 <link rel="alternate" title="{.}"  type="{@type}" href="{@url}" />
@@ -51,7 +39,7 @@
 <div class="wrapper">
 	<div class="header">
 		<div class="container">
-			<div class="title"><xsl:value-of select="title" /></div>
+			<div class="title"><xsl:value-of select="title" /><span class="version">v<xsl:value-of select="/output/app_version" /></span></div>
 		</div>
 	</div>
 

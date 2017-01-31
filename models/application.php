@@ -1,9 +1,7 @@
 <?php
 	class application_model extends Banshee\model {
 		public function get_applications() {
-			$query = "select a.*, b.name as owner ".
-			         "from applications a left join business b on a.owner_id=b.id ".
-			         "where a.organisation_id=%d order by a.name";
+			$query = "select * from applications where organisation_id=%d order by name";
 
 			return $this->db->execute($query, $this->user->organisation_id);
 		}
@@ -13,11 +11,17 @@
 			         "from applications a left join business b on a.owner_id=b.id ".
 			         "where a.id=%d and a.organisation_id=%d";
 
-			if (($application = $this->db->execute($query, $application_id, $this->user->organisation_id)) == false) {	
+			if (($result = $this->db->execute($query, $application_id, $this->user->organisation_id)) == false) {	
 				return false;
 			}
+			$application = $result[0];
 
-			return $application[0];
+			$query = "select l.* from labels l, label_application a, label_categories c ".
+			         "where l.id=a.label_id and a.application_id=%d and l.category_id=c.id ".
+			         "order by c.name, l.name";
+			$application["labels"] = $this->db->execute($query, $application_id);
+
+			return $application;
 		}
 
 		public function get_connections($application_id) {

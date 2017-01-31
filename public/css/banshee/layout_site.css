@@ -21,6 +21,13 @@ h2 {
 	font-size:24px;
 	margin-bottom:5px;
 }
+h2:before {
+	content:">";
+	margin-right:5px;
+	color:#f0c010;
+	position:relative;
+	top:-3px;
+}
 
 h3 {
 	font-size:18px;
@@ -83,6 +90,12 @@ div.header div.title {
 	font-weight:bold;
 	margin-top:20px;
 	text-shadow:0 0 4px #ffffff;
+}
+
+div.header div.title span.version {
+	font-size:10px;
+	margin-left:5px;
+	color:#8080c0;
 }
 
 @media (max-width:767px) {

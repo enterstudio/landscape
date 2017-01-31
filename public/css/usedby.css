@@ -1,0 +1,9 @@
+dd {
+	margin-left:20px;
+	padding-bottom:3px;
+	min-height:17px;
+}
+
+dd.description {
+	white-space:pre-wrap;
+}

@@ -10,8 +10,11 @@ $(document).ready(function() {
 		content = container;
 	}
 	var icon = $(content).find('img.title_icon');
+	var mesg = $(content).find('div.alert');
 	if (icon.length != 0) {
 		$(help_button).insertAfter(icon);
+	} else if (mesg.length != 0) {
+		$(help_button).insertAfter(mesg);
 	} else {
 		$(help_button).prependTo(content);
 	}

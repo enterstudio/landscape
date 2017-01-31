@@ -1,0 +1,62 @@
+img.title_icon {
+	margin-bottom:-40px;
+}
+
+input.form-control {
+	max-width:none;
+}
+
+div.sections {
+	margin-top:5px;
+}
+
+div.sections span {
+	margin-right:20px;
+	white-space:nowrap;
+	display:inline-block;
+}
+
+div.sections span input {
+	margin-right:5px;
+	position:relative;
+	top:1px;
+}
+
+ul.pagination {
+	list-style:none;
+	margin-left:0;
+}
+
+div.preview {
+	margin-left:15px;
+}
+
+div.error {
+	color:#ff0000;
+	margin-top:10px;
+}
+
+h2 {
+	border-bottom:1px solid #a0a0a0;
+	padding-bottom:3px;
+	margin-bottom:-5px;
+}
+
+@media (min-width:768px) {
+	div.result {
+		display:flex;
+		flex-flow:row wrap;
+	}
+
+	div.result div.section {
+		flex:1;
+		min-width:300px;
+		margin:0 20px;
+	}
+	div.result div.section:first-child {
+		margin-left:0;
+	}
+	div.result div.section:last-child {
+		margin-right:0;
+	}
+}

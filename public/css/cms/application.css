@@ -7,6 +7,10 @@ select#owner_existing {
 	display:none;
 }
 
+div.tab-pane {
+	padding-top:20px;
+}
+
 @media (min-width:767px) {
 	form.search {
 		float:right;

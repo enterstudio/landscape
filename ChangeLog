@@ -1,3 +1,12 @@
+landscape (0.2) stable; urgency=low
+
+  * Added search module.
+  * Added labels.
+  * Small improvements.
+  * Bugfix: confidentiality, integrity en availability not shown correctly.
+
+ -- Hugo Leisink <hugo@leisink.net>  Tue, 31 Jan 2017 10:23:57 +0100
+
 landscape (0.1) stable; urgency=low
 
   * Initial release.

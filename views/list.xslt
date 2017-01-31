@@ -37,7 +37,7 @@
 <tbody>
 <xsl:for-each select="record">
 <tr>
-<td><xsl:value-of select="protocol" /></td>
+<td><xsl:value-of select="protocol" /><xsl:if test="format!=''"> / <xsl:value-of select="format" /></xsl:if></td>
 <td><a href="/application/{@from_application_id}"><xsl:value-of select="from_app" /></a></td>
 <td><a href="/application/{@to_application_id}"><xsl:value-of select="to_app" /></a></td>
 </tr>

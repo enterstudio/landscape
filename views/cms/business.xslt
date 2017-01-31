@@ -2,6 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:import href="../banshee/main.xslt" />
 <xsl:import href="../banshee/pagination.xslt" />
+<xsl:import href="../includes/labels.xslt" />
 
 <!--
 //
@@ -51,10 +52,24 @@
 <input type="hidden" name="id" value="{business/@id}" />
 </xsl:if>
 
+<ul class="nav nav-tabs">
+<li class="active"><a href="#info" data-toggle="tab">Information</a></li>
+<li><a href="#labels" data-toggle="tab">Labels</a></li>
+</ul>
+
+<div class="tab-content">
+<div class="tab-pane active" id="info">
+
 <label for="name">Name:</label>
 <input type="text" id="name" name="name" value="{business/name}" class="form-control" />
 <label for="description">Description:</label>
 <textarea id="description" name="description" class="form-control"><xsl:value-of select="business/description" /></textarea>
+
+</div>
+<div class="tab-pane" id="labels">
+<xsl:apply-templates select="labels" />
+</div>
+</div>
 
 <div class="btn-group">
 <input type="submit" name="submit_button" value="Save business" class="btn btn-default" />

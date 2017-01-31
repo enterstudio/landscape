@@ -1,6 +1,12 @@
-Banshee
-=======
+Application Landscape Database
+==============================
 
+This application can be used to register your application landscape and make it accessible to the rest of your organisation.
+
+The application landscape can be exported in an ArchiMate format. With Archi, a free ArchiMate modelling tool, you can create a graphical overview of your application landscape. You can use the images you create with Archi in presentations and documentation.
+
+Banshee
+-------
 This application has been built upon Banshee, which is a PHP website framework with a main focus on security. It has a Model-View-Controller architecture and uses XSLT for the view. MySQL is being used as the default database, but with little effort other databases can be used as well. Although it's called a framework, it comes with a ready to use CMS, lots of libraries and modules like a forum, weblog and a guestbook.
 
 Configure your webserver

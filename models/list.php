@@ -19,7 +19,7 @@
 			         "(select name from applications where id=c.from_application_id) as from_app, ".
 			         "(select name from applications where id=c.to_application_id) as to_app ".
 			         "from connections c, applications a where c.from_application_id=a.id and a.organisation_id=%d ".
-			         "order by protocol, from_app, to_app";
+			         "order by protocol, format, from_app, to_app";
 
 			return $this->db->execute($query, $this->user->organisation_id);
 		}

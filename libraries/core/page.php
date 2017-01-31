@@ -87,7 +87,14 @@
 		 */
 		public function __destruct() {
 			$_SESSION["last_visit"] = time();
-			$_SESSION["previous_module"] = $this->module;
+
+			$this_page = ltrim($this->url, "/");
+			if (is_array($_SESSION["previous_pages"]) == false) {
+				$_SESSION["previous_pages"] = array(null, $this_page);
+			} else if ($_SESSION["previous_pages"][1] != $this_page) {
+				$_SESSION["previous_pages"][0] = $_SESSION["previous_pages"][1];
+				$_SESSION["previous_pages"][1] = $this_page;
+			}
 		}
 
 		/* Magic method get
@@ -99,7 +106,14 @@
 		public function __get($key) {
 			switch ($key) {
 				case "module": return $this->module;
-				case "previous_module": return $this->previous_module;
+				case "previous":
+					if (is_array($_SESSION["previous_pages"]) == false) {
+						return null;
+					} else if ($_SESSION["previous_pages"][1] != ltrim($this->url, "/")) {
+						return $_SESSION["previous_pages"][1];
+					} else {
+						return $_SESSION["previous_pages"][0];
+					}
 				case "url": return $this->url;
 				case "page": return $this->page !== null ? $this->page : $this->module;
 				case "type": return ltrim($this->type, ".");

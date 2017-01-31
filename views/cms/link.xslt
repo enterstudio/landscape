@@ -9,6 +9,7 @@
 //-->
 <xsl:template match="overview">
 <form action="/{/output/page}" method="post">
+<label for="application_id">Application:</label>
 <select id="application_id" name="application_id" class="form-control" onChange="javascript:submit()">
 <xsl:for-each select="applications/application">
 <option value="{@id}"><xsl:if test="@id=../@selected"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="name" /></option>
@@ -37,7 +38,7 @@
 </table>
 
 <div class="row">
-<div class="col-sm-8">
+<div class="col-sm-6">
 
 <h2>Used by</h2>
 <table class="table table-hover table-striped table-condensed">
@@ -55,17 +56,18 @@
 </table>
 
 </div>
-<div class="col-sm-4">
+<div class="col-sm-6">
 
 <h2>Runs at</h2>
 <table class="table table-hover table-striped table-condensed">
 <thead>
-<tr><th>Name</th></tr>
+<tr><th>Name</th><th>Operating System</th></tr>
 </thead>
 <tbody>
 <xsl:for-each select="runs_at/device">
 <tr onClick="javascript:document.location='/{/output/page}/runsat/{@id}'">
 <td><xsl:value-of select="name" /></td>
+<td><xsl:value-of select="os" /></td>
 </tr>
 </xsl:for-each>
 </tbody>
@@ -204,7 +206,7 @@
 //
 //-->
 <xsl:template match="content">
-<img src="/images/icons/application.png" class="title_icon" />
+<img src="/images/icons/links.png" class="title_icon" />
 <h1>Link administration</h1>
 <xsl:apply-templates select="overview" />
 <xsl:apply-templates select="connection" />

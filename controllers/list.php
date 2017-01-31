@@ -45,6 +45,8 @@
 				if (in_array($_POST["type"], $types)) {
 					$_SESSION["listtype"] = $_POST["type"];
 				}
+			} else if (in_array($this->page->pathinfo[1], $types)) {
+				$_SESSION["listtype"] = $this->page->pathinfo[1];
 			}
 
 			$this->show_list();

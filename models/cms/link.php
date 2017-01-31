@@ -82,6 +82,7 @@
 			if (isset($connection["id"])) {
 				if ($this->get_connection($connection["id"]) == false) {
 					$this->view->add_message("Connection not found.");
+					$this->user->log_action("unauthorized update attempt of connection %d", $connection["id"]);
 					return false;
 				}
 			}
@@ -114,6 +115,7 @@
 
 		public function delete_connection($connection_id) {
 			if ($this->get_connection($connection_id) == false) {
+				$this->user->log_action("unauthorized delete attempt of connection %d", $connection_id);
 				return false;
 			}
 
@@ -145,6 +147,7 @@
 			if (isset($usedby["id"])) {
 				if ($this->get_usedby($usedby["id"]) == false) {
 					$this->view->add_message("Used-by not found.");
+					$this->user->log_action("unauthorized update attempt of used-by %d", $usedby["id"]);
 					return false;
 				}
 			}
@@ -192,6 +195,7 @@
 
 		public function delete_usedby($usedby_id) {
 			if ($this->get_usedby($usedby_id) == false) {
+				$this->user->log_action("unauthorized delete attempt of used-by %d", $userby_id);
 				return false;
 			}
 
@@ -201,7 +205,7 @@
 		/* Runs at
 		 */
 		public function get_runsat_list($application_id) {
-			$query = "select r.*, h.name from hardware h, runs_at r ".
+			$query = "select r.*, h.name, h.os from hardware h, runs_at r ".
 			         "where h.id=r.hardware_id and r.application_id=%d and h.organisation_id=%d ".
 			         "order by name";
 
@@ -223,6 +227,7 @@
 			if (isset($runsat["id"])) {
 				if ($this->get_runsat($runsat["id"]) == false) {
 					$this->view->add_message("Runs-at not found.");
+					$this->user->log_action("unauthorized update attempt of runs-at %d", $runsat["id"]);
 					return false;
 				}
 			}
@@ -270,6 +275,7 @@
 
 		public function delete_runsat($runsat_id) {
 			if ($this->get_runsat($runsat_id) == false) {
+				$this->user->log_action("unauthorized delete attempt of runs-at %d", $runsat_id);
 				return false;
 			}
 

@@ -2,6 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:import href="../banshee/main.xslt" />
 <xsl:import href="../banshee/pagination.xslt" />
+<xsl:import href="../includes/labels.xslt" />
 
 <!--
 //
@@ -57,8 +58,18 @@
 <input type="hidden" name="id" value="{application/@id}" />
 </xsl:if>
 
+<ul class="nav nav-tabs">
+<li class="active"><a href="#info" data-toggle="tab">Information</a></li>
+<li><a href="#labels" data-toggle="tab">Labels</a></li>
+</ul>
+
+<div class="tab-content">
+<div class="tab-pane active" id="info">
+
 <label for="name">Name:</label>
 <input type="text" id="name" name="name" value="{application/name}" class="form-control" />
+<label for="type">Type:</label>
+<input type="text" id="type" name="type" value="{application/type}" class="form-control" />
 <label for="description">Description:</label>
 <textarea id="description" name="description" class="form-control"><xsl:value-of select="application/description" /></textarea>
 <label for="owner">Owner:</label>
@@ -72,25 +83,31 @@
 <label for="confidentiality">Confidentiality:</label>
 <select id="confidentiality" name="confidentiality" class="form-control">
 <xsl:for-each select="confidentiality/value">
-<option value="{position()}"><xsl:if test="position()=../../application/confidentiality"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="." /></option>
+<option value="{position()-1}"><xsl:if test="(position()-1)=../../application/confidentiality"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="." /></option>
 </xsl:for-each>
 </select>
 <label for="integrity">Integrity:</label>
 <select id="integrity" name="integrity" class="form-control">
 <xsl:for-each select="integrity/value">
-<option value="{position()}"><xsl:if test="position()=../../application/integrity"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="." /></option>
+<option value="{position()-1}"><xsl:if test="(position()-1)=../../application/integrity"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="." /></option>
 </xsl:for-each>
 </select>
 <label for="availability">Availability:</label>
 <select id="availability" name="availability" class="form-control">
 <xsl:for-each select="availability/value">
-<option value="{position()}"><xsl:if test="position()=../../application/availability"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="." /></option>
+<option value="{position()-1}"><xsl:if test="(position()-1)=../../application/availability"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="." /></option>
 </xsl:for-each>
 </select>
 <label for="external">External application:</label>
 <input type="checkbox" id="external" name="external"><xsl:if test="application/external='yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
 <label for="privacy_law">Privacy law applicable:</label>
 <input type="checkbox" id="privacy_law" name="privacy_law"><xsl:if test="application/privacy_law='yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
+
+</div>
+<div class="tab-pane" id="labels">
+<xsl:apply-templates select="labels" />
+</div>
+</div>
 
 <div class="btn-group">
 <input type="submit" name="submit_button" value="Save application" class="btn btn-default" />
@@ -100,6 +117,13 @@
 </xsl:if>
 </div>
 </form>
+
+<div id="help">
+<ul>
+<li><b>Type:</b> Technical informtion about the application. For example, 'PHP webapplication' or 'MSSQL database'.</li>
+<li><b>Information:</b> Short description of the information stored in the application. For example, 'personel information' or 'financial information'.</li>
+</ul>
+</div>
 </xsl:template>
 
 <!--

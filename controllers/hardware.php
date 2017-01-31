@@ -28,7 +28,7 @@
 
 			$this->view->title = $hardware["name"];
 
-			$this->view->open_tag("hardware", array("id" => $hardware_id));
+			$this->view->open_tag("hardware", array("id" => $hardware_id, "previous" => $this->page->previous));
 
 			$this->view->record($hardware);
 

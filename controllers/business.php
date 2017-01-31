@@ -37,9 +37,15 @@
 
 			$this->view->title = $business["name"];
 
-			$this->view->open_tag("business", array("id" => $business_id));
+			$this->view->open_tag("business", array("id" => $business_id, "previous" => $this->page->previous));
 
 			$this->view->record($business);
+
+			$this->view->open_tag("labels");
+			foreach ($business["labels"] as $label) {
+				$this->view->add_tag("label", $label["name"], array("id" => $label["id"]));
+			}
+			$this->view->close_tag();
 
 			$this->view->open_tag("usage");
 			foreach ($usage as $item) {

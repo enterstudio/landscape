@@ -8,7 +8,7 @@
 //
 //-->
 <xsl:template match="overview">
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed overview">
 <thead>
 <tr><th>Name</th><th>Description</th></tr>
 </thead>
@@ -42,6 +42,10 @@
 	<xsl:otherwise>4</xsl:otherwise>
 </xsl:choose></xsl:variable>
 <xsl:if test="description!=''"><div class="panel panel-default panel-body"><xsl:value-of select="description" /></div></xsl:if>
+
+<div>Labels:<xsl:for-each select="labels/label">
+<a href="/label/{@id}" class="label label-primary"><xsl:value-of select="." /></a>
+</xsl:for-each></div>
 
 <div class="row">
 <div class="col-sm-{$col_use}">
@@ -85,7 +89,7 @@
 </div>
 
 <div class="btn-group">
-<a href="/overview" class="btn btn-default">Back</a>
+<a href="/{@previous}" class="btn btn-default">Back</a>
 </div>
 
 <xsl:if test="count(usage/item)>0">

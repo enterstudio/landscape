@@ -14,6 +14,7 @@
 			}
 
 			$this->view->add_javascript("overview.js");
+			$this->view->add_help_button();
 
 			$this->view->open_tag("overview");
 

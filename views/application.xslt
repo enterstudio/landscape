@@ -8,17 +8,15 @@
 //
 //-->
 <xsl:template match="overview">
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed overview">
 <thead>
-<tr><th>Name</th><th>Owner</th><th>External</th><th>Privacy law</th></tr>
+<tr><th>Name</th><th>Type</th></tr>
 </thead>
 <tbody>
 <xsl:for-each select="application">
 <tr>
 <td><a href="/{/output/page}/{@id}"><xsl:value-of select="name" /></a></td>
-<td><a href="/business/{owner_id}"><xsl:value-of select="owner" /></a></td>
-<td><xsl:value-of select="external" /></td>
-<td><xsl:value-of select="privacy_law" /></td>
+<td><xsl:value-of select="type" /></td>
 </tr>
 </xsl:for-each>
 </tbody>
@@ -35,7 +33,12 @@
 //
 //-->
 <xsl:template match="application">
-<xsl:if test="description!=''"><div class="panel panel-default panel-body"><xsl:value-of select="description" /></div></xsl:if>
+<xsl:if test="type!='' or description!=''">
+<div class="panel panel-body panel-default">
+<xsl:if test="type!=''"><div>Type: <xsl:value-of select="type" /></div></xsl:if>
+<xsl:if test="description!=''"><div><xsl:value-of select="description" /></div></xsl:if>
+</div>
+</xsl:if>
 
 <div class="row">
 <div class="col-sm-4">Owner: <xsl:if test="owner!=''"><a href="/business/{owner_id}"><xsl:value-of select="owner" /></a></xsl:if></div>
@@ -48,6 +51,13 @@
 <div class="col-sm-4">Integrity: <xsl:value-of select="integrity" /></div>
 <div class="col-sm-4">Availability: <xsl:value-of select="availability" /></div>
 </div>
+
+<xsl:if test="labels/label">
+<div class="labels">Labels:<xsl:for-each select="labels/label">
+<xsl:if test="position()>1"><xsl:if test="@cid!=preceding::*[1]/@cid"><span>,</span></xsl:if></xsl:if>
+<a href="/label/{@id}" class="label label-primary"><xsl:value-of select="." /></a>
+</xsl:for-each></div>
+</xsl:if>
 
 <h2>Connections</h2>
 <table class="table table-striped table-condensed table-xs connections">
@@ -70,7 +80,7 @@
 </table>
 
 <div class="row">
-<div class="col-sm-8">
+<div class="col-sm-6">
 
 <h2>Used by</h2>
 <table class="table table-striped table-condensed usedby">
@@ -89,17 +99,19 @@
 </table>
 
 </div>
-<div class="col-sm-4">
+<div class="col-sm-6">
 
 <h2>Runs at</h2>
 <table class="table table-striped table-condensed runsat">
 <thead>
-<tr><th>Name</th></tr>
+<tr><th>Name</th><th>Operating System</th><th></th></tr>
 </thead>
 <tbody>
 <xsl:for-each select="runs_at/device">
 <tr>
 <td><a href="/hardware/{@id}"><xsl:value-of select="name" /></a></td>
+<td><a href="/hardware/{@id}"><xsl:value-of select="os" /></a></td>
+<td><xsl:if test="description!=''"><span class="glyphicon glyphicon-info-sign" onClick="javascript:show_dialog('run', {@id});" /></xsl:if></td>
 </tr>
 </xsl:for-each>
 </tbody>
@@ -109,7 +121,7 @@
 </div>
 
 <div class="btn-group">
-<a href="/overview" class="btn btn-default">Back</a>
+<a href="/{@previous}" class="btn btn-default">Back</a>
 </div>
 
 <div class="dialogs">
@@ -121,6 +133,11 @@
 <xsl:for-each select="used_by/entity">
 <xsl:if test="description!=''">
 <div id="des_use_{@id}" title="Used by {name}"><span><xsl:value-of select="description" /></span></div>
+</xsl:if>
+</xsl:for-each>
+<xsl:for-each select="runs_at/device">
+<xsl:if test="description!=''">
+<div id="des_run_{@id}" title="Runs at {name}"><span><xsl:value-of select="description" /></span></div>
 </xsl:if>
 </xsl:for-each>
 </div>

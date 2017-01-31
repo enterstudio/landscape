@@ -34,7 +34,14 @@
 				return false;
 			}
 
+			if (($cat_labels = $this->model->get_labels()) === false) {
+				$this->view->add_tag("result", "Error getting labels.");
+				return false;
+			}
+
 			$this->view->add_javascript("cms/application.js");
+			$this->view->add_css("includes/labels.css");
+			$this->view->add_help_button();
 
 			$this->view->open_tag("edit");
 			$application["external"] = show_boolean($application["external"]);
@@ -49,20 +56,33 @@
 			$this->view->close_tag();
 
 			$this->view->open_tag("confidentiality");
-			foreach (config_array(CONFIDENTIALITY) as $label) {
-				$this->view->add_tag("value", $label);
+			foreach (config_array(CONFIDENTIALITY) as $text) {
+				$this->view->add_tag("value", $text);
 			}
 			$this->view->close_tag();
 
 			$this->view->open_tag("integrity");
-			foreach (config_array(INTEGRITY) as $label) {
-				$this->view->add_tag("value", $label);
+			foreach (config_array(INTEGRITY) as $text) {
+				$this->view->add_tag("value", $text);
 			}
 			$this->view->close_tag();
 
 			$this->view->open_tag("availability");
-			foreach (config_array(AVAILABILITY) as $label) {
-				$this->view->add_tag("value", $label);
+			foreach (config_array(AVAILABILITY) as $text) {
+				$this->view->add_tag("value", $text);
+			}
+			$this->view->close_tag();
+
+			$this->view->open_tag("labels");
+			foreach ($cat_labels as $category => $labels) {
+				$this->view->open_tag("category", array("name" => $category));
+				foreach ($labels as $label) {
+					$param = array(
+						"id"      => $label["id"],
+						"checked" => show_boolean(in_array($label["id"], $application["labels"])));
+					$this->view->add_tag("label", $label["name"], $param);
+				}
+				$this->view->close_tag();
 			}
 			$this->view->close_tag();
 
@@ -124,7 +144,7 @@
 			} else if ($this->page->pathinfo[2] === "new") {
 				/* New application
 				 */
-				$application = array("owner_type" => "existing");
+				$application = array("owner_type" => "existing", "labels" => array());
 				$this->show_application_form($application);
 			} else if (valid_input($this->page->pathinfo[2], VALIDATE_NUMBERS, VALIDATE_NONEMPTY)) {
 				/* Edit application

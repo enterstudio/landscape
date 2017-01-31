@@ -1,3 +1,14 @@
+@media (min-width:768px) {
+	table.overview th:first-child {
+		width:300px;
+	}
+}
+
+a.label {
+	margin-left:5px;
+	display:inline-block;
+}
+
 table.usedby td:nth-child(3) {
 	cursor:pointer;
     width:25px;

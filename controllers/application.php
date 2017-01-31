@@ -8,10 +8,12 @@
 				return;
 			}
 
+			$confidentiality = config_array(CONFIDENTIALITY);
+			$integrity = config_array(INTEGRITY);
+			$availability = config_array(AVAILABILITY);
+
 			$this->view->open_tag("overview");
 			foreach ($applications as $application) {
-				$application["external"] = show_boolean($application["external"]);
-				$application["privacy_law"] = show_boolean($application["privacy_law"]);
 				$this->view->record($application, "application");
 			}
 			$this->view->close_tag();
@@ -44,7 +46,7 @@
 
 			$this->view->title = $application["name"];
 
-			$this->view->open_tag("application", array("id" => $application_id));
+			$this->view->open_tag("application", array("id" => $application_id, "previous" => $this->page->previous));
 
 			$confidentiality = config_array(CONFIDENTIALITY);
 			$application["confidentiality"] = $confidentiality[$application["confidentiality"]];
@@ -56,6 +58,14 @@
 			$application["external"] = show_boolean($application["external"]);
 			$application["privacy_law"] = show_boolean($application["privacy_law"]);
 			$this->view->record($application);
+
+			$this->view->open_tag("labels");
+			foreach ($application["labels"] as $label) {
+				$this->view->add_tag("label", $label["name"], array(
+					"id"  => $label["id"],
+					"cid" => $label["category_id"]));
+			}
+			$this->view->close_tag();
 
 			$data_flow = config_array(DATA_FLOW);
 			$this->view->open_tag("connections");

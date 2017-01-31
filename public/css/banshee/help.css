@@ -5,6 +5,8 @@ div.modal-header {
 
 button.help {
 	float:right;
+	position:relative;
+	top:-3px;
 }
 
 img.title_icon + button.help {

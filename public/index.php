@@ -69,6 +69,7 @@
 		$_view->open_tag("banshee");
 		$_view->add_tag("version", BANSHEE_VERSION);
 		$_view->close_tag();
+		$_view->add_tag("app_version", APP_VERSION);
 		$_view->add_tag("website_url", $_SERVER["SERVER_NAME"]);
 
 		/* Page information

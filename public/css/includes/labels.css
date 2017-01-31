@@ -1,0 +1,9 @@
+div.category span {
+	margin-right:15px;
+	white-space:nowrap;
+	display:inline-block;
+}
+
+div.category span input[type=checkbox] {
+	margin-right:5px;
+}

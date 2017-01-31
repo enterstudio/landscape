@@ -8,15 +8,15 @@
 //
 //-->
 <xsl:template match="overview">
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed overview">
 <thead>
-<tr><th>Name</th><th>Description</th></tr>
+<tr><th>Name</th><th>Operating System</th></tr>
 </thead>
 <tbody>
 <xsl:for-each select="device">
 <tr>
 <td><a href="/{/output/page}/{@id}"><xsl:value-of select="name" /></a></td>
-<td><xsl:value-of select="description" /></td>
+<td><xsl:value-of select="os" /></td>
 </tr>
 </xsl:for-each>
 </tbody>
@@ -48,7 +48,7 @@
 </table>
 
 <div class="btn-group">
-<a href="/overview" class="btn btn-default">Back</a>
+<a href="/{@previous}" class="btn btn-default">Back</a>
 </div>
 </xsl:template>
 

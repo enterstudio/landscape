@@ -26,6 +26,7 @@ CREATE TABLE `applications` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `organisation_id` int(10) unsigned NOT NULL,
   `name` tinytext NOT NULL,
+  `type` tinytext NOT NULL,
   `description` text NOT NULL,
   `owner_id` int(10) unsigned DEFAULT NULL,
   `confidentiality` tinyint(3) unsigned NOT NULL,
@@ -109,10 +110,79 @@ CREATE TABLE `hardware` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `organisation_id` int(10) unsigned NOT NULL,
   `name` tinytext NOT NULL,
+  `os` tinytext NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `organisation_id` (`organisation_id`),
   CONSTRAINT `hardware_ibfk_1` FOREIGN KEY (`organisation_id`) REFERENCES `organisations` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `label_application`
+--
+
+DROP TABLE IF EXISTS `label_application`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `label_application` (
+  `label_id` int(10) unsigned NOT NULL,
+  `application_id` int(10) unsigned NOT NULL,
+  KEY `label_id` (`label_id`),
+  KEY `application_id` (`application_id`),
+  CONSTRAINT `label_application_ibfk_1` FOREIGN KEY (`label_id`) REFERENCES `labels` (`id`),
+  CONSTRAINT `label_application_ibfk_2` FOREIGN KEY (`application_id`) REFERENCES `applications` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `label_business`
+--
+
+DROP TABLE IF EXISTS `label_business`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `label_business` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `label_id` int(10) unsigned NOT NULL,
+  `business_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `label_id` (`label_id`),
+  KEY `business_id` (`business_id`),
+  CONSTRAINT `label_business_ibfk_1` FOREIGN KEY (`label_id`) REFERENCES `labels` (`id`),
+  CONSTRAINT `label_business_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `business` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `label_categories`
+--
+
+DROP TABLE IF EXISTS `label_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `label_categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `organisation_id` int(10) unsigned NOT NULL,
+  `name` tinytext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `labels`
+--
+
+DROP TABLE IF EXISTS `labels`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `labels` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int(10) unsigned NOT NULL,
+  `name` tinytext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `labels_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `label_categories` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -156,7 +226,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (1,0,'Overview','/overview'),(2,0,'Lists','/list'),(3,0,'Issues','/issues'),(4,0,'Export','/export'),(5,0,'Logout','/logout');
+INSERT INTO `menu` VALUES (1,0,'Overview','/overview'),(2,0,'Lists','/list'),(3,0,'Labels','/label'),(4,0,'Issues','/issues'),(5,0,'Search','/search'),(6,0,'Export','/export'),(7,0,'Logout','/logout');
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,7 +316,6 @@ CREATE TABLE `roles` (
   `cms/action` tinyint(4) DEFAULT '0',
   `cms/apitest` tinyint(4) DEFAULT '0',
   `cms/file` tinyint(4) DEFAULT '0',
-  `cms/flag` tinyint(4) DEFAULT '0',
   `cms/menu` tinyint(4) DEFAULT '0',
   `cms/organisation` tinyint(4) DEFAULT '0',
   `cms/page` tinyint(4) DEFAULT '0',
@@ -267,6 +336,12 @@ CREATE TABLE `roles` (
   `report` tinyint(4) DEFAULT '0',
   `issues` tinyint(4) DEFAULT '0',
   `list` tinyint(4) DEFAULT '0',
+  `search` tinyint(4) DEFAULT '0',
+  `connection` tinyint(4) DEFAULT '0',
+  `usedby` tinyint(4) DEFAULT '0',
+  `cms/label` tinyint(4) DEFAULT '0',
+  `cms/label/category` tinyint(4) DEFAULT '0',
+  `label` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -278,8 +353,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'Administrator',1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1),(2,'Maintainer',1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,1,1,1,1,1,1),(3,'User',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1);
-INSERT INTO `roles` VALUES (1,'Administrator',1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1),(2,'Maintainer',1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1),(3,'User',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1);
+INSERT INTO `roles` VALUES (1,'Administrator',1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1),(2,'Maintainer',1,1,1,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1),(3,'User',1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,1);
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -349,7 +423,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES (1,'admin_page_size','integer','25'),(5,'default_language','string','en'),(9,'start_page','string','overview'),(10,'webmaster_email','string','hugo@leisink.net'),(49,'max_apps_per_server','integer','2'),(26,'head_title','string','Application landscape database'),(27,'head_description','string','Application landscape database'),(28,'head_keywords','string','application landscape, information systems, applications, landscape'),(35,'secret_website_code','string',''),(39,'hiawatha_cache_default_time','integer','3600'),(41,'hiawatha_cache_enabled','boolean','false'),(42,'session_timeout','integer','86400'),(43,'session_persistent','boolean','false'),(46,'database_version','integer','1');
+INSERT INTO `settings` VALUES (1,'admin_page_size','integer','25'),(2,'default_language','string','en'),(3,'start_page','string','overview'),(4,'webmaster_email','string','root@localhost'),(5,'max_apps_per_server','integer','2'),(6,'head_title','string','Application Landscape Database'),(7,'head_description','string','Application landscape database'),(8,'head_keywords','string','application landscape, information systems, applications, landscape'),(9,'secret_website_code','string',''),(10,'hiawatha_cache_default_time','integer','3600'),(11,'hiawatha_cache_enabled','boolean','false'),(12,'session_timeout','integer','86400'),(13,'session_persistent','boolean','false'),(14,'database_version','integer','1');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -368,7 +442,9 @@ CREATE TABLE `used_by` (
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `application_id` (`application_id`),
-  KEY `business_id` (`business_id`)
+  KEY `business_id` (`business_id`),
+  CONSTRAINT `used_by_ibfk_1` FOREIGN KEY (`application_id`) REFERENCES `applications` (`id`),
+  CONSTRAINT `used_by_ibfk_2` FOREIGN KEY (`business_id`) REFERENCES `business` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -444,4 +520,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-10 20:16:36
+-- Dump completed on 2017-01-22 16:58:18

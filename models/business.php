@@ -13,7 +13,12 @@
 				return false;
 			}
 
-			return $result[0];
+			$business = $result[0];
+
+			$query = "select l.* from labels l, label_business b where l.id=b.label_id and b.business_id=%d order by name";
+			$business["labels"] = $this->db->execute($query, $business_id);
+
+			return $business;
 		}
 
 		public function get_application_ownership($business_id) {

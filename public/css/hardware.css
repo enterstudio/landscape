@@ -1,0 +1,5 @@
+@media (min-width:768px) {
+	table.overview th:first-child {
+		width:300px;
+	}
+}

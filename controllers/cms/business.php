@@ -27,8 +27,30 @@
 		}
 
 		private function show_business_form($business) {
+			if (($cat_labels = $this->model->get_labels()) === false) {
+				$this->view->add_tag("result", "Error getting labels.");
+				return false;
+			}
+
+			$this->view->add_css("includes/labels.css");
+
 			$this->view->open_tag("edit");
+
 			$this->view->record($business, "business");
+
+			$this->view->open_tag("labels");
+			foreach ($cat_labels as $category => $labels) {
+				$this->view->open_tag("category", array("name" => $category));
+				foreach ($labels as $label) {
+					$param = array(
+						"id"      => $label["id"],
+						"checked" => show_boolean(in_array($label["id"], $business["labels"])));
+					$this->view->add_tag("label", $label["name"], $param);
+				}
+				$this->view->close_tag();
+			}
+			$this->view->close_tag();
+
 			$this->view->close_tag();
 		}
 
@@ -83,7 +105,7 @@
 			} else if ($this->page->pathinfo[2] === "new") {
 				/* New business
 				 */
-				$business = array();
+				$business = array("labels" => array());
 				$this->show_business_form($business);
 			} else if (valid_input($this->page->pathinfo[2], VALIDATE_NUMBERS, VALIDATE_NONEMPTY)) {
 				/* Edit business

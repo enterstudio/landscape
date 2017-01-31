@@ -9,10 +9,11 @@
 					"Access"        => array("cms/access", "access.png"),
 					"User switch"   => array("cms/switch", "switch.png")),
 				"Application landscape" => array(
-					"Application"   => array("cms/application", "application.png"),
+					"Applications"  => array("cms/application", "application.png"),
 					"Business"      => array("cms/business", "business.png"),
 					"Hardware"      => array("cms/hardware", "hardware.png"),
-					"Link"          => array("cms/link", "link.png")),
+					"Labels"        => array("cms/label", "labels.png"),
+					"Links"         => array("cms/link", "links.png")),
 				"Content" => array(
 					"Files"         => array("cms/file", "file.png"),
 					"Languages"     => array("cms/language", "language.png"),

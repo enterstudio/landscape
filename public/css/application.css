@@ -1,10 +1,25 @@
-table.connections td:nth-child(7), table.usedby td:nth-child(3) {
-	cursor:pointer;
-	width:25px;
+@media (min-width:768px) {
+	table.overview th:first-child {
+		width:300px;
+	}
+
+	table.connections td:nth-child(7), table.usedby td:nth-child(3), table.runsat td:nth-child(3) {
+		cursor:pointer;
+		width:25px;
+	}
 }
 
-div.row + div.row {
-	margin-top:10px;
+div.labels span {
+	margin:0 1px 0 2px;
+}
+
+div.row {
+	margin-bottom:10px;
+}
+
+a.label {
+	margin-left:5px;
+	display:inline-block;
 }
 
 div.dialogs {

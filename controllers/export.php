@@ -20,6 +20,9 @@
 				if ($application["description"] != "") {
 					$xml->add_tag("documentation", $application["description"]);
 				}
+				$xml->add_tag("property", null, array(
+					"key"   => "Type",
+					"value" => $application["type"]));
 				$xml->close_tag();
 			}
 
@@ -84,6 +87,9 @@
 				if ($device["description"] != "") {
 					$xml->add_tag("documentation", $device["description"]);
 				}
+				$xml->add_tag("property", null, array(
+					"key"   => "OS",
+					"value" => $device["os"]));
 				$xml->close_tag();
 			}
 
@@ -113,6 +119,8 @@
 					if ($link["description"] != "") {
 						$xml->add_tag("documentation", $link["description"]);
 					}
+
+					$link["data_flow"] = $data_flow[$link["data_flow"]];
 					foreach ($properties as $property) {
 						if ($link[$property] != null) {
 							$xml->add_tag("property", null, array(
@@ -136,6 +144,9 @@
 					if ($link["description"] != "") {
 						$xml->add_tag("documentation", $link["description"]);
 					}
+					$xml->add_tag("property", null, array(
+						"key"   => "Input",
+						"value" => $link["input"]));
 					$xml->close_tag();
 				}
 			}

@@ -25,6 +25,7 @@
 					foreach ($this->model->missing_php_extensions() as $extension) {
 						$this->view->add_tag("extension", $extension);
 					}
+					ob_clean();
 					break;
 				case "mysql_client":
 					break;

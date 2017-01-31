@@ -44,8 +44,20 @@
 			if (($result = $this->db->execute($query, $application_id, $this->user->organisation_id)) == false) {
 				return false;
 			}
+			$application = $result[0];
 
-			return $result[0];
+			$query = "select l.* from label_application l, applications a ".
+			         "where l.application_id=a.id and application_id=%d and a.organisation_id=%d";
+			if (($labels = $this->db->execute($query, $application_id, $this->user->organisation_id)) === false) {
+				return false;
+			}
+
+			$application["labels"] = array();
+			foreach ($labels as $label) {
+				array_push($application["labels"], (int)$label["label_id"]);
+			}
+
+			return $application;
 		}
 
 		public function get_business() {
@@ -54,7 +66,11 @@
 			return $this->db->execute($query, $this->user->organisation_id);
 		}
 
-		public function get_owner_id($application) {
+		public function get_labels() {
+			return $this->borrow("label")->get_labels();
+		}
+
+		private function get_owner_id($application) {
 			if ($application["owner_type"] == "new") {
 				if ($application["owner_name"] == "") {
 					return null;
@@ -62,7 +78,7 @@
 
 				if (($business = $this->db->entry("business", $application["owner_name"], "name")) === false) {
 					return false;
-				} else if ($business != false) {
+				} else if ($business !== null) {
 					return (int)$business["id"];
 				}
 
@@ -94,6 +110,7 @@
 			if (isset($application["id"])) {
 				if ($this->get_application($application["id"]) == false) {
 					$this->view->add_message("Application not found.");
+					$this->user->log_action("unauthorized update attempt of application %d", $application["id"]);
 					return false;
 				}
 			}
@@ -121,7 +138,7 @@
 				}
 			}
 
-			if ($application["owner_type"] == "existing") {
+			if (($application["owner_type"] == "existing") && ($application["owner_id"] != 0)) {
 				$query = "select * from business where id=%d and organisation_id=%d";
 				if ($this->db->execute($query, $application["owner_id"], $this->user->organisation_id) == false) {
 					$this->view->add_message("Owner does not exist.");
@@ -132,8 +149,34 @@
 			return $result;
 		}
 
+		private function save_labels($labels, $application_id) {
+			if (is_array($labels) == false) {
+				return true;
+			}
+
+			if (($label_ids = $this->borrow("label")->get_label_ids()) === false) {
+				return false;
+			}
+
+			foreach ($labels as $label_id) {
+				if (in_array($label_id, $label_ids) == false) {
+					$this->user->log_action("unauthorized label assign attempt %d", $label_id);
+					return false;
+				}
+
+				$value = array(
+					"label_id"       => $label_id,
+					"application_id" => $application_id);
+				if ($this->db->insert("label_application", $value) === false) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
 		public function create_application($application) {
-			$keys = array("id", "organisation_id", "name", "description", "owner_id", "confidentiality", "integrity", "availability", "external", "privacy_law");
+			$keys = array("id", "organisation_id", "name", "type", "description", "owner_id", "confidentiality", "integrity", "availability", "external", "privacy_law");
 
 			$application["id"] = null;
 			$application["name"] = trim($application["name"]);
@@ -155,11 +198,16 @@
 				return false;
 			}
 
+			if ($this->save_labels($application["labels"], $this->db->last_insert_id) == false) {
+				$this->db->query("rollback");
+				return false;
+			}
+
 			return $this->db->query("commit") !== false;
 		}
 
 		public function update_application($application) {
-			$keys = array("name", "description", "owner_id", "confidentiality", "integrity", "availability", "external", "privacy_law");
+			$keys = array("name", "type", "description", "owner_id", "confidentiality", "integrity", "availability", "external", "privacy_law");
 
 			$application["name"] = trim($application["name"]);
 			$application["external"] = is_true($application["external"]) ? YES : NO;
@@ -179,6 +227,17 @@
 				return false;
 			}
 
+			$query = "delete from label_application where application_id=%d";
+			if ($this->db->query($query, $application["id"]) === false) {
+				$this->db->query("rollback");
+				return false;
+			}
+
+			if ($this->save_labels($application["labels"], $application["id"]) == false) {
+				$this->db->query("rollback");
+				return false;
+			}
+
 			return $this->db->query("commit") !== false;
 		}
 
@@ -187,6 +246,7 @@
 
 			if ($this->get_application($application["id"]) == false) {
 				$this->view->add_message("Application not found.");
+				$this->user->log_action("unauthorized delete attempt of application %d", $application["id"]);
 				$result = false;
 			}
 
@@ -195,6 +255,7 @@
 
 		public function delete_application($application_id) {
 			$queries = array(
+				array("delete from label_application where application_id=%d", $application_id),
 				array("delete from used_by where application_id=%d", $application_id),
 				array("delete from connections where from_application_id=%d or to_application_id=%d", $application_id, $application_id),
 				array("delete from runs_at where application_id=%d", $application_id),

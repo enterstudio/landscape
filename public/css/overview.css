@@ -1,5 +1,6 @@
 div.filter {
 	margin-bottom:10px;
+	padding-right:30px;
 }
 
 div.filter input {
@@ -14,6 +15,10 @@ img.icon {
 	float:right;
 	width:40px;
 	margin-top:10px;
+}
+
+div.list-group {
+	box-shadow:3px 5px 8px #808080;
 }
 
 @media (min-width:768px) {

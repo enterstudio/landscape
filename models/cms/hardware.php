@@ -45,6 +45,7 @@
 			if (isset($hardware["id"])) {
 				if ($this->get_device($hardware["id"]) == false) {
 					$this->view->add_message("Hardware not found.");
+					$this->user->log_action("unauthorized update attempt of hardware %d", $hardware["id"]);
 					return false;
 				}
 			}
@@ -75,7 +76,7 @@
 		}
 
 		public function create_hardware($hardware) {
-			$keys = array("id", "organisation_id", "name", "description");
+			$keys = array("id", "organisation_id", "name", "os", "description");
 
 			$hardware["id"] = null;
 			$hardware["name"] = trim($hardware["name"]);
@@ -85,7 +86,7 @@
 		}
 
 		public function update_hardware($hardware) {
-			$keys = array("name", "description");
+			$keys = array("name", "os", "description");
 
 			$hardware["name"] = trim($hardware["name"]);
 
@@ -97,6 +98,7 @@
 
 			if ($this->get_device($hardware["id"]) == false) {
 				$this->view->add_message("Hardware not found.");
+				$this->user->log_action("unauthorized delete attempt of hardware %d", $hardware["id"]);
 				$result = false;
 			}
 

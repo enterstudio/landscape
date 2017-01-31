@@ -1,5 +1,7 @@
 <?php
 	class profile_model extends Banshee\model {
+		private $hashed = null;
+
 		public function last_account_logs() {
 			if (($fp = fopen("../logfiles/actions.log", "r")) == false) {
 				return false;
@@ -34,7 +36,7 @@
 			static $cache = array();
 
 			if (isset($cache[$password]) == false) {
-				$cache[$password] = hash_password($profile["password"], $this->user->username);
+				$cache[$password] = hash_password($password, $this->user->username);
 			}
 
 			return $cache[$password];
@@ -58,21 +60,25 @@
 				}
 			}
 
-			if (hash_password($profile["current"], $this->user->username) != $this->user->password) {
+			if (strlen($profile["current"]) > PASSWORD_MAX_LENGTH) {
+				$this->view->add_message("Current password is too long.");
+				$result = false;
+			} else if (hash_password($profile["current"], $this->user->username) != $this->user->password) {
 				$this->view->add_message("Current password is incorrect.");
 				$result = false;
 			}
 
 			if ($profile["password"] != "") {
-				if (secure_password($profile["password"], $this->view) == false) {
+				if (is_secure_password($profile["password"], $this->view) == false) {
 					$result = false;
 				} else if ($profile["password"] != $profile["repeat"]) {
 					$this->view->add_message("New passwords do not match.");
 					$result = false;
-				} else if ($this->user->password == $this->hash_password($profile["password"])) {
+				} else if ($this->hash_password($profile["password"]) == $this->user->password) {
 					$this->view->add_message("New password must be different from current password.");
 					$result = false;
 				}
+
 			}
 
 			return $result;
@@ -81,7 +87,7 @@
 		public function update_profile($profile) {
 			$keys = array("fullname", "email");
 
-			if ($this->hashed !== null) {
+			if ($profile["password"] != "") {
 				array_push($keys, "password");
 				array_push($keys, "status");
 

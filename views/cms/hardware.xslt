@@ -16,14 +16,13 @@
 
 <table class="table table-condensed table-striped table-hover">
 <thead>
-<tr>
-<th>Name</th>
-</tr>
+<tr><th>Name</th><th>Operating System</th></tr>
 </thead>
 <tbody>
 <xsl:for-each select="hardware/device">
 <tr class="click" onClick="javascript:document.location='/{/output/page}/{@id}'">
 <td><xsl:value-of select="name" /></td>
+<td><xsl:value-of select="os" /></td>
 </tr>
 </xsl:for-each>
 </tbody>
@@ -53,6 +52,8 @@
 
 <label for="name">Name:</label>
 <input type="text" id="name" name="name" value="{hardware/name}" class="form-control" />
+<label for="name">Operating System:</label>
+<input type="text" id="os" name="os" value="{hardware/os}" class="form-control" />
 <label for="description">Description:</label>
 <textarea id="description" name="description" class="form-control"><xsl:value-of select="hardware/description" /></textarea>
 

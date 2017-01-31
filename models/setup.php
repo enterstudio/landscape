@@ -1,6 +1,6 @@
 <?php
 	class setup_model extends Banshee\model {
-		private $required_php_extensions = array("gd", "libxml", "mysqli", "xsl");
+		private $required_php_extensions = array("libxml", "mysqli", "xsl");
 
 		/* Determine next step
 		 */

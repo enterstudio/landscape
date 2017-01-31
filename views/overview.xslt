@@ -43,16 +43,10 @@
 </div>
 </div>
 </div>
-</xsl:template>
 
-<!--
-//
-//  Edit template
-//
-//-->
-<xsl:template match="edit">
-<xsl:call-template name="show_messages" />
-edit
+<div id="help">
+<p>The number behind an object (application, business entity or hardware device) indicates the number of links (connection, used-by or runs-at) to that object.</p>
+</div>
 </xsl:template>
 
 <!--
@@ -63,7 +57,6 @@ edit
 <xsl:template match="content">
 <h1>Overview</h1>
 <xsl:apply-templates select="overview" />
-<xsl:apply-templates select="edit" />
 <xsl:apply-templates select="result" />
 </xsl:template>
 

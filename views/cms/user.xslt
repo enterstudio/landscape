@@ -43,7 +43,6 @@
 <a href="/{/output/page}/new" class="btn btn-default">New user</a>
 <a href="/cms" class="btn btn-default">Back</a>
 </div>
-<div class="clear"></div>
 </xsl:template>
 
 <!--

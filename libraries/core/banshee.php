@@ -9,6 +9,7 @@
 	 */
 
 	define("BANSHEE_VERSION", "6.0");
+	define("APP_VERSION", "0.2");
 	define("ADMIN_ROLE_ID", 1);
 	define("USER_ROLE_ID", 2);
 	define("YES", 1);
@@ -30,9 +31,6 @@
 	define("LOGIN_MODULE", "banshee/login");
 	define("LOGOUT_MODULE", "logout");
 	define("PROFILE_MODULE", "profile");
-	define("FPDF_FONTPATH", "../extra/fpdf_fonts/");
-	define("K_PATH_FONTS", "../extra/tcpdf_fonts/");
-	define("PHOTO_PATH", "photos");
 	define("FILES_PATH", "files");
 	define("TLS_CERT_SERIAL_VAR", "TLS_CERT_SERIAL");
 

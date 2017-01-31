@@ -1,0 +1,20 @@
+@media (min-width:768px) {
+	div.categories {
+		display:flex;
+		flex-flow:row wrap;
+	}
+
+	div.category {
+		flex:1;
+		min-width:300px;
+		margin:0 20px;
+	}
+}
+
+div.category:first-child {
+	margin-left:0;
+}
+
+div.category:last-child {
+	margin-right:0;
+}
