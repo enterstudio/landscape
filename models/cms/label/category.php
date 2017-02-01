@@ -33,8 +33,9 @@
 				$this->view->add_message("Enter the category name.");
 				$result = false;
 			} else {
-				$query = "select count(*) as count from label_categories where name=%s";
-				$args = array(trim($category["name"]));
+				$query = "select count(*) as count from label_categories ".
+				         "where organisation_id=%d and name=%s";
+				$args = array($this->user->organisation_id, trim($category["name"]));
 
 				if (isset($category["id"])) {
 					$query .= " and id!=%d";
