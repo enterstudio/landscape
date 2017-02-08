@@ -69,7 +69,7 @@
 			}
 
 			if ($profile["password"] != "") {
-				if (is_secure_password($profile["password"], $this->view) == false) {
+				if (secure_password($profile["password"], $this->view) == false) {
 					$result = false;
 				} else if ($profile["password"] != $profile["repeat"]) {
 					$this->view->add_message("New passwords do not match.");
