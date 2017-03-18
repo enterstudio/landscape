@@ -1,3 +1,11 @@
+landscape (0.3) stable; urgency=low
+
+  * Replaced application property 'external' with 'location'.
+  * Export the landscape in XML and JSON format.
+  * Small improvements and bugfixes.
+
+ -- Hugo Leisink <hugo@leisink.net>  Sat, 18 Mar 2017 15:07:28 +0100
+
 landscape (0.2) stable; urgency=low
 
   * Added search module.

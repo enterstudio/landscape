@@ -10,14 +10,14 @@
 <xsl:template match="privacy">
 <table class="table table-condensed table-striped">
 <thead>
-<tr><th>Name</th><th>Owner</th><th>External</th></tr>
+<tr><th>Name</th><th>Owner</th><th>Location</th></tr>
 </thead>
 <tbody>
 <xsl:for-each select="record">
 <tr>
 <td><a href="/application/{@id}"><xsl:value-of select="name" /></a></td>
 <td><a href="/business/{owner_id}"><xsl:value-of select="owner" /></a></td>
-<td><xsl:value-of select="external" /></td>
+<td><xsl:value-of select="location" /></td>
 </tr>
 </xsl:for-each>
 </tbody>

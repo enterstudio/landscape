@@ -210,15 +210,6 @@
 		/* Update database
 		 */
 		public function update_database() {
-			if ($this->settings->database_version < 1) {
-				$this->ensure_setting("hiawatha_cache_enabled", "boolean", "false");
-				$this->ensure_setting("hiawatha_cache_default_time", "integer", "3600");
-				$this->ensure_setting("session_timeout", "integer", "3600");
-				$this->ensure_setting("session_persistent", "boolean", "false");
-
-				$this->settings->database_version = 1;
-			}
-
 			return true;
 		}
 

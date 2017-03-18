@@ -30,7 +30,6 @@
 			}
 
 			$this->view->add_javascript("cms/page.js");
-			$this->view->add_ckeditor("div.btn-group");
 
 			$this->view->open_tag("edit");
 

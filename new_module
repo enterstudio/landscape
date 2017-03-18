@@ -15,9 +15,8 @@
 	/* Show help and exit
 	 */
 	function help_exit() {
-		printf("Usage: %s public|private <module name> [tm|sf|db|api]\n", $GLOBALS["argv"][0]);
+		printf("Usage: %s public|private <module name> [tm|db|api]\n", $GLOBALS["argv"][0]);
 		printf("  - tm: create a TableManager module.\n");
-		printf("  - sf: create a SplitForm module.\n");
 		printf("  - db: create a CRUD module.\n");
 		printf("  - api: create an API module.\n");
 		printf("  Look inside the templates directory for the module templates.\n");
@@ -106,8 +105,6 @@
 		$type = "page";
 	} else if ($type == "tm") {
 		$type = "tablemanager";
-	} else if ($type == "sf") {
-		$type = "splitform";
 	} else if ($type == "db") {
 		$type = "crud";
 	} else if ($type == "api") {

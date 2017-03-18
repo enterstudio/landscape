@@ -68,6 +68,7 @@
 			$this->add_enum(config_array(CONFIDENTIALITY), "confidentiality", $query, $args);
 			$this->add_enum(config_array(INTEGRITY), "integrity", $query, $args);
 			$this->add_enum(config_array(AVAILABILITY), "availability", $query, $args);
+			$this->add_enum(config_array(LOCATION), "location", $query, $args);
 			$query .= ") order by name desc";
 
 			return $this->db->execute($query, $args);

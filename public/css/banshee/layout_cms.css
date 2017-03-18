@@ -238,6 +238,10 @@ div.btn-group {
 	padding:0 16px;
 }
 
+div#help ul {
+	padding-left:15px;
+}
+
 /* Footer
  */
 div.footer {

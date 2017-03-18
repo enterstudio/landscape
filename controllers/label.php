@@ -39,9 +39,9 @@
 				return;
 			}
 
-			$this->view->title = $label["label"]." :: ".$label["category"];
+			$this->view->title = $label["category"]." :: ".$label["label"];
 
-			$this->view->open_tag("label");
+			$this->view->open_tag("label", array("previous" => $this->page->previous));
 
 			$this->view->open_tag("applications");
 			foreach ($applications as $application) {

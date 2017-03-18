@@ -119,10 +119,10 @@
 
 <div class="btn-group">
 <input type="submit" name="submit_button" value="Save connection" class="btn btn-default" />
+<a href="/{/output/page}" class="btn btn-default">Cancel</a>
 <xsl:if test="@id">
 <input type="submit" name="submit_button" value="Delete connection" class="btn btn-default" onClick="javascript:return confirm('DELETE: Are you sure?')" />
 </xsl:if>
-<a href="/{/output/page}" class="btn btn-default">Back</a>
 </div>
 </form>
 
@@ -163,12 +163,18 @@
 
 <div class="btn-group">
 <input type="submit" name="submit_button" value="Save used-by" class="btn btn-default" />
+<a href="/{/output/page}" class="btn btn-default">Cancel</a>
 <xsl:if test="@id">
 <input type="submit" name="submit_button" value="Delete used-by" class="btn btn-default" onClick="javascript:return confirm('DELETE: Are you sure?')" />
 </xsl:if>
-<a href="/{/output/page}" class="btn btn-default">Back</a>
 </div>
 </form>
+
+<div id="help">
+<ul>
+<li><b>Information input:</b> Description of manually entered information.</li>
+</ul>
+</div>
 </xsl:template>
 
 <!--
@@ -192,10 +198,10 @@
 
 <div class="btn-group">
 <input type="submit" name="submit_button" value="Save runs-at" class="btn btn-default" />
+<a href="/{/output/page}" class="btn btn-default">Cancel</a>
 <xsl:if test="@id">
 <input type="submit" name="submit_button" value="Delete runs-at" class="btn btn-default" onClick="javascript:return confirm('DELETE: Are you sure?')" />
 </xsl:if>
-<a href="/{/output/page}" class="btn btn-default">Back</a>
 </div>
 </form>
 </xsl:template>

@@ -20,7 +20,7 @@
 <tr>
 <th><a href="?order=name">Name</a></th>
 <th><a href="?order=owner_id">Owner</a></th>
-<th><a href="?order=external">External</a></th>
+<th><a href="?order=location">Location</a></th>
 <th><a href="?order=privacy_law">Privacy law</a></th>
 </tr>
 </thead>
@@ -29,7 +29,7 @@
 <tr class="click" onClick="javascript:document.location='/{/output/page}/{@id}'">
 <td><xsl:value-of select="name" /></td>
 <td><xsl:value-of select="owner" /></td>
-<td><xsl:value-of select="external" /></td>
+<td><xsl:value-of select="location" /></td>
 <td><xsl:value-of select="privacy_law" /></td>
 </tr>
 </xsl:for-each>
@@ -98,8 +98,12 @@
 <option value="{position()-1}"><xsl:if test="(position()-1)=../../application/availability"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="." /></option>
 </xsl:for-each>
 </select>
-<label for="external">External application:</label>
-<input type="checkbox" id="external" name="external"><xsl:if test="application/external='yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
+<label for="location">Location:</label>
+<select id="location" name="location" class="form-control">
+<xsl:for-each select="locations/value">
+<option value="{position()-1}"><xsl:if test="(position()-1)=../../application/location"><xsl:attribute name="selected">selected</xsl:attribute></xsl:if><xsl:value-of select="." /></option>
+</xsl:for-each>
+</select>
 <label for="privacy_law">Privacy law applicable:</label>
 <input type="checkbox" id="privacy_law" name="privacy_law"><xsl:if test="application/privacy_law='yes'"><xsl:attribute name="checked">checked</xsl:attribute></xsl:if></input>
 
@@ -120,7 +124,7 @@
 
 <div id="help">
 <ul>
-<li><b>Type:</b> Technical informtion about the application. For example, 'PHP webapplication' or 'MSSQL database'.</li>
+<li><b>Type:</b> Technical informtion about the application. For example, 'PHP webapplication' or 'MS-SQL database'.</li>
 <li><b>Information:</b> Short description of the information stored in the application. For example, 'personel information' or 'financial information'.</li>
 </ul>
 </div>

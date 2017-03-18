@@ -64,7 +64,7 @@
 							$this->view->add_message("Error creating label.");
 							$this->show_label_form($_POST);
 						} else {
-							$this->user->log_action("label created");
+							$this->user->log_action("label %d created", $this->db->last_insert_id);
 							$this->show_overview();
 						}
 					} else {
@@ -74,7 +74,7 @@
 							$this->view->add_message("Error updating label.");
 							$this->show_label_form($_POST);
 						} else {
-							$this->user->log_action("label updated");
+							$this->user->log_action("label %d updated", $_POST["id"]);
 							$this->show_overview();
 						}
 					}
@@ -87,7 +87,7 @@
 						$this->view->add_message("Error deleting label.");
 						$this->show_label_form($_POST);
 					} else {
-						$this->user->log_action("label deleted");
+						$this->user->log_action("label %d deleted", $_POST["id"]);
 						$this->show_overview();
 					}
 				} else if ($_POST["submit_button"] == "category") {
@@ -112,7 +112,7 @@
 				/* Edit label
 				 */
 				if (($label = $this->model->get_label($this->page->pathinfo[2])) === false) {
-					$this->view->add_tag("result", "label not found.");
+					$this->view->add_tag("result", "Label not found.");
 				} else {
 					$this->show_label_form($label);
 				}

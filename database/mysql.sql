@@ -32,7 +32,7 @@ CREATE TABLE `applications` (
   `confidentiality` tinyint(3) unsigned NOT NULL,
   `availability` tinyint(3) unsigned NOT NULL,
   `integrity` tinyint(3) unsigned NOT NULL,
-  `external` tinyint(1) NOT NULL,
+  `location` tinyint(3) unsigned NOT NULL,
   `privacy_law` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `organisation_id` (`organisation_id`),

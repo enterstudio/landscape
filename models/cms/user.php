@@ -325,38 +325,11 @@
 				}
 			}
 
-			if ($this->table_exists("weblogs")) {
-				$query = "select count(*) as count from weblogs where user_id=%d";
-				if (($result = $this->db->execute($query, $user_id)) === false) {
-					$this->view->add_message("Database error.");
-					$result = false;
-				} else if ($result[0]["count"] > 0) {
-					$this->view->add_message("This user has weblog messages to its name.");
-					$result = false;
-				}
-			}
-
 			return $result;
 		}
 
 		public function delete_user($user_id) {
-			$queries = array();
-
-			/* Forum last view
-			 */
-			if ($this->table_exists("forum_last_view")) {
-				array_push($queries, array("delete from forum_last_view where user_id=%d", $user_id));
-			}
-
-			/* Forum messages
-			 */
-			if ($this->table_exists("forum_messages")) {
-				$query = "update forum_messages set user_id=null, username=".
-				         "(select fullname from users where id=%d limit 1) where user_id=%d";
-				array_push($queries, array($query, $user_id, $user_id));
-			}
-
-			array_push($queries,
+			$queries = array(
 				array("delete from sessions where user_id=%d", $user_id),
 				array("delete from user_role where user_id=%d", $user_id),
 				array("delete from users where id=%d", $user_id));

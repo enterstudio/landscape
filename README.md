@@ -3,7 +3,7 @@ Application Landscape Database
 
 This application can be used to register your application landscape and make it accessible to the rest of your organisation.
 
-The application landscape can be exported in an ArchiMate format. With Archi, a free ArchiMate modelling tool, you can create a graphical overview of your application landscape. You can use the images you create with Archi in presentations and documentation.
+The application landscape can be exported in the ArchiMate, XML and JSON format. With Archi, a free ArchiMate modelling tool, you can create a graphical overview of your application landscape. You can use the images you create with Archi in presentations and documentation.
 
 Banshee
 -------

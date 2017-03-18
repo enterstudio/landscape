@@ -196,9 +196,9 @@
 			$xml->close_tag();
 		}
 
-		/* Export landscape
+		/* Export in archimate format
 		 */
-		private function export_landscape() {
+		private function export_archimate() {
 			$xml = new Banshee\Core\XML;
 
 			$xml->open_tag("archimate:model", array(
@@ -222,11 +222,44 @@
 			print $xml->document;
 		}
 
+		/* Export table
+		 */
+		private function export_table($category, $item) {
+			$function = "get_".$category;
+			if (($applications = $this->model->$function()) === false) {
+				return false;
+			}
+
+			$this->view->open_tag($category);
+			foreach ($applications as $application) {
+				$this->view->record($application, $item);
+			}
+			$this->view->close_tag();
+		}
+
+		/* Export data 
+		 */
+		private function export_data() {
+			$this->export_table("applications", "application");
+			$this->export_table("business", "entity");
+			$this->export_table("hardware", "device");
+			$this->export_table("connections", "connection");
+			$this->export_table("usedby", "item");
+			$this->export_table("runsat", "item");
+
+			header("Content-Type: application/".$this->view->mode);
+			header("Content-Disposition: attachment; filename=\"Application landscape.".$this->view->mode."\"");
+		}
+
 		/* Execute
 		 */
 		public function execute() {
-			if ($_SERVER["REQUEST_METHOD"] == "POST") {
-				$this->export_landscape();
+			if ($this->view->mode == "archimate") {
+				$this->export_archimate();
+			} else if ($this->view->mode == "xml") {
+				$this->export_data();
+			} else if ($this->view->mode == "json") {
+				$this->export_data();
 			}
 		}
 	}

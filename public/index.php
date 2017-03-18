@@ -27,13 +27,6 @@
 		$_language = new Core\language($_database, $_page, $_view);
 	}
 
-	/* Web Analytics
-	 */
-	if (library_exists("analytics") && ($_user->is_admin == false)) {
-		$analytics = new analytics($_database, $_page);
-		$analytics->execute();
-	}
-
 	/* Prevent Cross-Site Request Forgery
 	 */
 	prevent_csrf($_view, $_user);

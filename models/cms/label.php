@@ -21,7 +21,7 @@
 
 		public function get_label($label_id) {
 			$query = "select l.* from labels l, label_categories c ".
-			         "where l.id=%d and l.category_id=c.id";
+			         "where l.id=%d and l.category_id=c.id and c.organisation_id=%d";
 
 			if (($result = $this->db->execute($query, $label_id, $this->user->organisation_id)) == false) {
 				return false;
@@ -37,7 +37,7 @@
 				if ($this->get_label($label["id"]) == false) {
 					$this->view->add_message("Label not found.");
 					$this->user->log_action("unauthorized update attempt of label %d", $label["id"]);
-					$result = false;
+					return false;
 				}
 			}
 
@@ -54,9 +54,9 @@
 					array_push($args, $label["id"]);
 				}
 
-				if (($result = $this->db->execute($query, $args)) === false) {
+				if (($labels = $this->db->execute($query, $args)) === false) {
 					$result = false;
-				} else if ($result[0]["count"] > 0) {
+				} else if ($labels[0]["count"] > 0) {
 					$this->view->add_message("This label label already exists.");
 					$result = false;
 				}
@@ -72,7 +72,7 @@
 			$label["name"] = trim($label["name"]);
 			$label["category_id"] = $_SESSION["label_category"];
 
-			return $this->db->insert("labels", $label, $keys);
+			return $this->db->insert("labels", $label, $keys) !== false;
 		}
 
 		public function update_label($label) {
@@ -80,7 +80,7 @@
 
 			$label["name"] = trim($label["name"]);
 
-			return $this->db->update("labels", $label["id"], $label, $keys);
+			return $this->db->update("labels", $label["id"], $label, $keys) !== false;
 		}
 
 		public function delete_oke($label) {

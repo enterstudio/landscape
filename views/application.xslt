@@ -42,7 +42,7 @@
 
 <div class="row">
 <div class="col-sm-4">Owner: <xsl:if test="owner!=''"><a href="/business/{owner_id}"><xsl:value-of select="owner" /></a></xsl:if></div>
-<div class="col-sm-4">External application: <xsl:value-of select="external" /></div>
+<div class="col-sm-4">Location: <xsl:value-of select="location" /></div>
 <div class="col-sm-4">Privacy law applicable: <xsl:value-of select="privacy_law" /></div>
 </div>
 

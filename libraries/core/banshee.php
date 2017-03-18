@@ -9,7 +9,7 @@
 	 */
 
 	define("BANSHEE_VERSION", "6.0");
-	define("APP_VERSION", "0.2");
+	define("APP_VERSION", "0.3");
 	define("ADMIN_ROLE_ID", 1);
 	define("USER_ROLE_ID", 2);
 	define("YES", 1);

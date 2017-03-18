@@ -13,11 +13,13 @@
 				return;
 			}
 
+			$locations = config_array(LOCATION);
+
 			$this->view->open_tag("overview");
 
 			$this->view->open_tag("applications");
 			foreach ($applications as $application) {
-				$application["external"] = show_boolean($application["external"]);
+				$application["location"] = $locations[$application["location"]];
 				$application["privacy_law"] = show_boolean($application["privacy_law"]);
 				$this->view->record($application, "application");
 			}
@@ -25,6 +27,14 @@
 
 			$paging->show_browse_links();
 
+			$this->view->close_tag();
+		}
+
+		private function add_list($label, $data) {
+			$this->view->open_tag($label);
+			foreach (config_array($data) as $text) {
+				$this->view->add_tag("value", $text);
+			}
 			$this->view->close_tag();
 		}
 
@@ -39,12 +49,15 @@
 				return false;
 			}
 
+			if (is_array($application["labels"]) == false) {
+				$application["labels"] = array();
+			}
+
 			$this->view->add_javascript("cms/application.js");
 			$this->view->add_css("includes/labels.css");
 			$this->view->add_help_button();
 
 			$this->view->open_tag("edit");
-			$application["external"] = show_boolean($application["external"]);
 			$application["privacy_law"] = show_boolean($application["privacy_law"]);
 			$this->view->record($application, "application");
 
@@ -55,23 +68,10 @@
 			}
 			$this->view->close_tag();
 
-			$this->view->open_tag("confidentiality");
-			foreach (config_array(CONFIDENTIALITY) as $text) {
-				$this->view->add_tag("value", $text);
-			}
-			$this->view->close_tag();
-
-			$this->view->open_tag("integrity");
-			foreach (config_array(INTEGRITY) as $text) {
-				$this->view->add_tag("value", $text);
-			}
-			$this->view->close_tag();
-
-			$this->view->open_tag("availability");
-			foreach (config_array(AVAILABILITY) as $text) {
-				$this->view->add_tag("value", $text);
-			}
-			$this->view->close_tag();
+			$this->add_list("confidentiality", CONFIDENTIALITY);
+			$this->add_list("integrity", INTEGRITY);
+			$this->add_list("availability", AVAILABILITY);
+			$this->add_list("locations", LOCATION);
 
 			$this->view->open_tag("labels");
 			foreach ($cat_labels as $category => $labels) {
@@ -107,7 +107,7 @@
 							$this->view->add_message("Error creating application.");
 							$this->show_application_form($_POST);
 						} else {
-							$this->user->log_action("application created");
+							$this->user->log_action("application %d created", $this->db->last_insert_id);
 							$this->show_overview();
 						}
 					} else {
@@ -117,7 +117,7 @@
 							$this->view->add_message("Error updating application.");
 							$this->show_application_form($_POST);
 						} else {
-							$this->user->log_action("application updated");
+							$this->user->log_action("application %d updated", $_POST["id"]);
 							$this->show_overview();
 						}
 					}
@@ -130,7 +130,7 @@
 						$this->view->add_message("Error deleting application.");
 						$this->show_application_form($_POST);
 					} else {
-						$this->user->log_action("application deleted");
+						$this->user->log_action("application %d deleted", $_POST["id"]);
 						$this->show_overview();
 					}
 				} else if ($_POST["submit_button"] == "search") {
@@ -144,7 +144,7 @@
 			} else if ($this->page->pathinfo[2] === "new") {
 				/* New application
 				 */
-				$application = array("owner_type" => "existing", "labels" => array());
+				$application = array("owner_type" => "existing");
 				$this->show_application_form($application);
 			} else if (valid_input($this->page->pathinfo[2], VALIDATE_NUMBERS, VALIDATE_NONEMPTY)) {
 				/* Edit application

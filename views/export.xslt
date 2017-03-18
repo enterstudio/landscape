@@ -10,13 +10,17 @@
 <xsl:template match="content">
 <img src="/images/icons/export.png" class="title_icon" />
 <h1>Export landscape</h1>
-<p>The application landscape can be exported in an ArchiMate format. With Archi, a free ArchiMate modelling tool, you can create a graphical overview of your application landscape. You can use the images you create with Archi in presentations and documentation.</p>
-<form action="/{/output/page}" method="post">
+<p>The application landscape can be exported in the ArchiMate, XML and JSON format. With Archi, a free ArchiMate modelling tool, you can create a graphical overview of your application landscape. You can use the images you create with Archi in presentations and documentation.</p>
+
 <div class="btn-group">
-<input type="submit" name="submit_button" value="Export application landscape" class="btn btn-default" />
+<a href="?output=archimate" class="btn btn-default">Export in archimate format</a>
 <a href="http://www.archimatetool.org/" class="btn btn-default">Visit the Archi website</a>
 </div>
-</form>
+
+<div class="btn-group">
+<a href="?output=xml" class="btn btn-default">Export in XML format</a>
+<a href="?output=json" class="btn btn-default">Export in JSON format</a>
+</div>
 </xsl:template>
 
 </xsl:stylesheet>

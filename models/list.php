@@ -6,8 +6,9 @@
 			         "order by name";
 
 			if (($result = $this->db->execute($query, YES, $this->user->organisation_id)) !== false) {
+				$locations = config_array(LOCATION);
 				foreach ($result as $i => $item) {
-					$result[$i]["external"] = show_boolean($item["external"]);
+					$result[$i]["location"] = $locations[$item["location"]];
 				}
 			}
 

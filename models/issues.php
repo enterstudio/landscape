@@ -15,9 +15,9 @@
 
 		public function get_no_hardware() {
 			$query = "select *, (select count(*) from runs_at where application_id=a.id) as hardware ".
-			         "from applications a having hardware=%d and external=%d and organisation_id=%d";
+			         "from applications a having hardware=%d and location=%d and organisation_id=%d";
 
-			return $this->db->execute($query, 0, NO, $this->user->organisation_id);
+			return $this->db->execute($query, 0, 0, $this->user->organisation_id);
 		}
 
 		public function get_isolated_business() {

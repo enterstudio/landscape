@@ -55,7 +55,8 @@
 			$availability = config_array(AVAILABILITY);
 			$application["availability"] = $availability[$application["availability"]];
 
-			$application["external"] = show_boolean($application["external"]);
+			$locations = config_array(LOCATION);
+			$application["location"] = $locations[$application["location"]];
 			$application["privacy_law"] = show_boolean($application["privacy_law"]);
 			$this->view->record($application);
 

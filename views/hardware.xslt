@@ -33,7 +33,10 @@
 //
 //-->
 <xsl:template match="hardware">
-<xsl:if test="description!=''"><div class="panel panel-default panel-body"><xsl:value-of select="description" /></div></xsl:if>
+<xsl:if test="os!='' or description!=''"><div class="panel panel-default panel-body">
+<xsl:if test="os!=''"><div>OS: <xsl:value-of select="os" /></div></xsl:if>
+<xsl:if test="description!=''"><div><xsl:value-of select="description" /></div></xsl:if>
+</div></xsl:if>
 
 <h2>Applications</h2>
 <table class="table table-striped table-condensed">

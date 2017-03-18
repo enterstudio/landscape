@@ -1,3 +1,10 @@
+The Application Landscape Database is built upon the Banshee PHP framework. The
+license for the Banshee PHP framework files remains the same. To all the other
+files, which form the Application Landscape Database, the GPL2 license applies:
+https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 Banshee PHP framework - Copyright (C) by Hugo Leisink <hugo@leisink.net>
 
 You are allowed to use the Banshee PHP framework under the following conditions:

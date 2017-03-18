@@ -273,25 +273,6 @@
 				"url"   => $url));
 		}
 
-		/* Add CKEditor
-		 */
-		public function add_ckeditor($button_selector = null, $textarea_selector = "editor") {
-			if (file_exists("js/ckeditor/ckeditor.js") == false) {
-				if ($button_selector === null) {
-					$this->add_system_warning("The CKEditor library was not found. Run the script extra/download_ckeditor to download and install it.");
-				}
-				return;
-			}
-
-			$this->add_javascript("ckeditor/ckeditor.js");
-			$this->add_javascript("banshee/ckeditor.js");
-			if ($button_selector == null) {
-				$this->run_javascript("start_ckeditor('".$textarea_selector."')");
-			} else {
-				$this->run_javascript("add_ckeditor_button('".$button_selector."', '".$textarea_selector."')");
-			}
-		}
-
 		/* Add help button
 		 *
 		 * INPUT:  -

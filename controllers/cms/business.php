@@ -68,7 +68,7 @@
 							$this->view->add_message("Error creating business.");
 							$this->show_business_form($_POST);
 						} else {
-							$this->user->log_action("business created");
+							$this->user->log_action("business %d created", $this->db->last_insert_id);
 							$this->show_overview();
 						}
 					} else {
@@ -78,7 +78,7 @@
 							$this->view->add_message("Error updating business.");
 							$this->show_business_form($_POST);
 						} else {
-							$this->user->log_action("business updated");
+							$this->user->log_action("business %d updated", $_POST["id"]);
 							$this->show_overview();
 						}
 					}
@@ -91,7 +91,7 @@
 						$this->view->add_message("Error deleting business.");
 						$this->show_business_form($_POST);
 					} else {
-						$this->user->log_action("business deleted");
+						$this->user->log_action("business %d deleted", $_POST["id"]);
 						$this->show_overview();
 					}
 				} else if ($_POST["submit_button"] == "search") {

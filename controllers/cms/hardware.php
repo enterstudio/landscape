@@ -46,7 +46,7 @@
 							$this->view->add_message("Error creating hardware.");
 							$this->show_hardware_form($_POST);
 						} else {
-							$this->user->log_action("hardware created");
+							$this->user->log_action("hardware %d created", $this->db->last_insert_id);
 							$this->show_overview();
 						}
 					} else {
@@ -56,7 +56,7 @@
 							$this->view->add_message("Error updating hardware.");
 							$this->show_hardware_form($_POST);
 						} else {
-							$this->user->log_action("hardware updated");
+							$this->user->log_action("hardware %d updated", $_POST["id"]);
 							$this->show_overview();
 						}
 					}
@@ -69,7 +69,7 @@
 						$this->view->add_message("Error deleting hardware.");
 						$this->show_hardware_form($_POST);
 					} else {
-						$this->user->log_action("hardware deleted");
+						$this->user->log_action("hardware %d deleted", $_POST["id"]);
 						$this->show_overview();
 					}
 				} else if ($_POST["submit_button"] == "search") {

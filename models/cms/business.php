@@ -60,7 +60,7 @@
 
 			if (isset($business["id"])) {
 				if ($this->get_entity($business["id"]) == false) {
-					$this->view->add_message("Business not found.");
+					$this->view->add_message("Business entity not found.");
 					$this->user->log_action("unauthorized update attempt of business %d", $business["id"]);
 					return false;
 				}
@@ -173,7 +173,7 @@
 			$result = true;
 
 			if ($this->get_entity($business["id"]) == false) {
-				$this->view->add_message("Business not found.");
+				$this->view->add_message("Business entity not found.");
 				$this->user->log_action("unauthorized delete attempt of business %d", $business["id"]);
 				$result = false;
 			}

@@ -66,7 +66,7 @@
 </div>
 
 <div class="btn-group">
-<a href="/{/output/page}" class="btn btn-default">Back</a>
+<a href="/{@previous}" class="btn btn-default">Back</a>
 </div>
 </xsl:template>
 

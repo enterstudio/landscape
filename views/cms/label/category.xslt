@@ -27,7 +27,7 @@
 </div>
 
 <div id="help">
-<p>Add categories for your labels, like 'Information' for the labels 'financial information', 'personel information' or 'customer information' or 'Process' for the labels 'Sales', 'production', 'sales' or 'marketing'.</p>
+<p>Add categories for your labels, like 'Information' for the labels 'financial information', 'personel information' or 'customer information' or 'Process' for the labels 'sales', 'production', 'sales' or 'marketing'.</p>
 </div>
 </xsl:template>
 

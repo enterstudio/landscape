@@ -1,6 +1,6 @@
 <?php
 	class cms_application_model extends Banshee\model {
-		private $columns = array("name", "owner_id", "description", "external", "privacy_law");
+		private $columns = array("name", "owner_id", "description", "location", "privacy_law");
 
 		public function count_applications() {
 			$query = "select count(*) as count from applications where organisation_id=%d";
@@ -176,12 +176,11 @@
 		}
 
 		public function create_application($application) {
-			$keys = array("id", "organisation_id", "name", "type", "description", "owner_id", "confidentiality", "integrity", "availability", "external", "privacy_law");
+			$keys = array("id", "organisation_id", "name", "type", "description", "owner_id", "confidentiality", "integrity", "availability", "location", "privacy_law");
 
 			$application["id"] = null;
 			$application["name"] = trim($application["name"]);
 			$application["organisation_id"] = $this->user->organisation_id;
-			$application["external"] = is_true($application["external"]) ? YES : NO;
 			$application["privacy_law"] = is_true($application["privacy_law"]) ? YES : NO;
 
 			if ($this->db->query("begin") === false) {
@@ -207,10 +206,9 @@
 		}
 
 		public function update_application($application) {
-			$keys = array("name", "type", "description", "owner_id", "confidentiality", "integrity", "availability", "external", "privacy_law");
+			$keys = array("name", "type", "description", "owner_id", "confidentiality", "integrity", "availability", "location", "privacy_law");
 
 			$application["name"] = trim($application["name"]);
-			$application["external"] = is_true($application["external"]) ? YES : NO;
 			$application["privacy_law"] = is_true($application["privacy_law"]) ? YES : NO;
 
 			if ($this->db->query("begin") === false) {

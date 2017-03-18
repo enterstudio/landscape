@@ -40,7 +40,7 @@
 							$this->show_category_form($_POST);
 						} else {
 							$_SESSION["label_category"] = $this->db->last_insert_id;
-							$this->user->log_action("category created");
+							$this->user->log_action("category %d created", $this->db->last_insert_id);
 							$this->show_overview();
 						}
 					} else {
@@ -50,7 +50,7 @@
 							$this->view->add_message("Error updating category.");
 							$this->show_category_form($_POST);
 						} else {
-							$this->user->log_action("category updated");
+							$this->user->log_action("category %d updated", $_POST["id"]);
 							$this->show_overview();
 						}
 					}
@@ -64,7 +64,7 @@
 						$this->show_category_form($_POST);
 					} else {
 						unset($_SESSION["label_category"]);
-						$this->user->log_action("category deleted");
+						$this->user->log_action("category %d deleted", $_POST["id"]);
 						$this->show_overview();
 					}
 				} else {
@@ -79,7 +79,7 @@
 				/* Edit category
 				 */
 				if (($category = $this->model->get_category($this->page->pathinfo[3])) === false) {
-					$this->view->add_tag("result", "category not found.");
+					$this->view->add_tag("result", "Category not found.");
 				} else {
 					$this->show_category_form($category);
 				}

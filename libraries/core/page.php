@@ -88,7 +88,7 @@
 		public function __destruct() {
 			$_SESSION["last_visit"] = time();
 
-			$this_page = ltrim($this->url, "/");
+			$this_page = trim($this->url, "/");
 			if (is_array($_SESSION["previous_pages"]) == false) {
 				$_SESSION["previous_pages"] = array(null, $this_page);
 			} else if ($_SESSION["previous_pages"][1] != $this_page) {

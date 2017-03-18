@@ -25,7 +25,7 @@
 				if ($this->get_category($category["id"]) == false) {
 					$this->view->add_message("Category not found.");
 					$this->user->log_action("unauthorized update attempt of label category %d", $category["id"]);
-					$result = false;
+					return false;
 				}
 			}
 
@@ -42,9 +42,9 @@
 					array_push($args, $category["id"]);
 				}
 
-				if (($result = $this->db->execute($query, $args)) === false) {
+				if (($categories = $this->db->execute($query, $args)) === false) {
 					$result = false;
-				} else if ($result[0]["count"] > 0) {
+				} else if ($categories[0]["count"] > 0) {
 					$this->view->add_message("This label category already exists.");
 					$result = false;
 				}
@@ -60,7 +60,7 @@
 			$category["name"] = trim($category["name"]);
 			$category["organisation_id"] = $this->user->organisation_id;
 
-			return $this->db->insert("label_categories", $category, $keys);
+			return $this->db->insert("label_categories", $category, $keys) !== false;
 		}
 
 		public function update_category($category) {
@@ -68,7 +68,7 @@
 
 			$category["name"] = trim($category["name"]);
 
-			return $this->db->update("label_categories", $category["id"], $category, $keys);
+			return $this->db->update("label_categories", $category["id"], $category, $keys) !== false;
 		}
 
 		public function delete_oke($category) {

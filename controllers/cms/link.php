@@ -74,6 +74,8 @@
 				return;
 			}
 
+			$this->view->add_help_button();
+
 			$this->view->add_tag("application", $application["name"]);
 		}
 
